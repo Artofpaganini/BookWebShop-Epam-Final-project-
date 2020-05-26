@@ -2,8 +2,8 @@
 <div align="center">
 	<div>
 		<img src="../images/logoAdmin.png" />
-
-
+		
+		
 	</div>
 
 	<div>
@@ -26,7 +26,7 @@
 		</div>
 
 		<div>
-			<a href="books"> <img src="../images/books.png" /><br />Books
+			<a href="list_books"> <img src="../images/books.png" /><br />Books
 			</a>
 		</div>
 

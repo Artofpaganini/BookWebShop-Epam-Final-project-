@@ -84,7 +84,7 @@ public class JpaDAO<E> {// Целью JpaDAO является предоставление общих операций,
 
 	}
 
-	public List<E> findByNamedQuery(String queryName, String parameterName, Object parameterValue) {
+	public List<E> findByNamedQuery(String queryName, String parameterName, Object parameterValue) {  // возвращает список объектов которые необходимо проверить
 
 		Query query = entityManager.createNamedQuery(queryName);
 

@@ -19,6 +19,7 @@ public class UserDAOImpl extends JpaDAO<Users> implements GenericDAO<Users> {
 
 	}
 
+	@Override
 	public Users create(Users user) {
 		/*
 		 * при создании мы передаем пасс generateSHA256, где пароль передается в
