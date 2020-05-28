@@ -3,15 +3,16 @@
 <div align="center">
 	<div>
 		<img src="images/logo.png" />
-
-
 	</div>
 
 	<div>
-		<input type="text" name="keyword" size="50" /> <input type="button"
-			value="Search" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a
-			href="login">Sign in</a> | <a href="register">Register</a> | <a
-			href="view_cart">Cart</a> |
+		<form action="search" method="get">
+			<!-- создание отклика от  строки поиск и привязка к search сервлету -->
+			<input type="text" name="keyword" size="50" /> <input type="submit"
+				value="Search" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a
+				href="login">Sign in</a> | <a href="register">Register</a> | <a
+				href="view_cart">Cart</a> |
+		</form>
 	</div>
 
 	<div>&nbsp;</div>
