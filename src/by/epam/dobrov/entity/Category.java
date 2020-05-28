@@ -20,9 +20,9 @@ import javax.persistence.UniqueConstraint;
  */
 @Entity
 @Table(name = "category", catalog = "book_shop", uniqueConstraints = @UniqueConstraint(columnNames = "name"))
-@NamedQueries({ @NamedQuery(name = "Category.findAll", query = "select c from Category c order by c.name"),
-		@NamedQuery(name = "Category.countAll", query = "select COUNT(*) from Category c "),
-		@NamedQuery(name = "Category.findByName", query = "select c from Category c where c.name = :name") })
+@NamedQueries({ @NamedQuery(name = "Category.findAll", query = "Select c from Category c order by c.name"),
+		@NamedQuery(name = "Category.countAll", query = "Select COUNT(*) from Category c "),
+		@NamedQuery(name = "Category.findByName", query = "Select c from Category c where c.name = :name") })
 public class Category implements java.io.Serializable {
 
 	private Integer categoryId;
@@ -37,7 +37,6 @@ public class Category implements java.io.Serializable {
 	}
 	
 	
-
 	public Category(Integer categoryId, String name) {
 	
 		this.categoryId = categoryId;
@@ -52,7 +51,7 @@ public class Category implements java.io.Serializable {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 
-	@Column(name = "category_id", unique = true, nullable = false)
+	@Column(name = "categoryId", unique = true, nullable = false)
 	public Integer getCategoryId() {
 		return this.categoryId;
 	}

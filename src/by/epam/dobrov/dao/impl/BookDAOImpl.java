@@ -56,10 +56,21 @@ public class BookDAOImpl extends JpaDAO<Book> implements GenericDAO<Book> {
 
 		List<Book> bookList = super.findByNamedQuery("Book.findByTitle", "title", title);
 
-		if(!bookList.isEmpty()) {
+		if (!bookList.isEmpty()) {
 			return bookList.get(0);
 		}
 		return null;
+	}
+
+	public List<Book> listBookByCategory(int categoryId) {
+
+		return super.findByNamedQuery("Book.findByCategory", "ñatId", categoryId);
+
+	}
+
+	public List<Book> search(String keyword) {
+
+		return super.findByNamedQuery("Book.searchBook", "keyword", keyword);
 	}
 
 }

@@ -37,11 +37,19 @@ public class CategoryServices {
 	}
 
 	public void listCategory() throws ServletException, IOException {
+		listCategory(null);
+	}
+
+	public void listCategory(String message) throws ServletException, IOException {
 
 		LOGGER.info("Got list category from DB");
 
 		List<Category> listCategory = categoryDAOImpl.listAll();
 		request.setAttribute("listCategory", listCategory);
+
+		if (message != null) { // проверка на наличие сообщения , если оно не налл то выводим его
+			request.setAttribute("message", message);
+		}
 
 		String listpage = "category_list.jsp";
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(listpage);
@@ -123,16 +131,23 @@ public class CategoryServices {
 
 	public void deleteCategory() throws ServletException, IOException {
 
-		LOGGER.info("Delete User from user list and from DB");
+		LOGGER.info("Delete category from category list and from DB");
 
 		int categoryId = Integer.parseInt(request.getParameter("id"));
 
 		Category categoryById = categoryDAOImpl.get(categoryId);
 
-		categoryDAOImpl.delete(categoryId);
-		listCategory();
+		if (categoryById == null) {  // проверка возможно  эту категорию уже удалил другой админ
+			String message = "Could not find category with ID " + categoryId + ", or it might have been deleted";
+			request.setAttribute("message", message);
+			request.getRequestDispatcher("message.jsp").forward(request, response);
+		}
 
-		LOGGER.info("Delete user");
+		categoryDAOImpl.delete(categoryId);
+		String message = "Category with ID " + categoryId + " has been deleted";
+		listCategory(message);
+
+		LOGGER.info("Category with ID {} has been deleted", categoryId);
 
 	}
 

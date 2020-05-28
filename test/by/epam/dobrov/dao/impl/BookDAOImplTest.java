@@ -155,8 +155,70 @@ public class BookDAOImplTest extends BaseDAOTest {
 		String title = "First Head Java (2nd Edition)";
 		Book book = bookDAOImpl.findByTitle(title);
 
-
 		assertNotNull(book);
+	}
+
+	@Test
+	public void test_ShouldGetListBooksByCategory() {
+
+		int categoryId = 14;
+
+		List<Book> listBook = bookDAOImpl.listBookByCategory(categoryId);
+
+		assertTrue(listBook.size() > 0);
+
+		for (Book book : listBook) {
+			System.out.println(book.getTitle());
+		}
+	}
+
+	@Test
+	public void test_ShouldSearchBookByTitle() {
+
+		String keyword = "Bates ";
+
+		List<Book> listBooks = bookDAOImpl.search(keyword);
+
+		for (Book book : listBooks) {
+			System.out.println(book.getTitle());
+		}
+		
+		assertEquals(2, listBooks.size());
+		
+
+		
+	}
+	
+	@Test
+	public void test_ShouldSearchBookByAuthor() {
+
+		String keyword = "Bates ";
+
+		List<Book> listBooks = bookDAOImpl.search(keyword);
+
+		for (Book book : listBooks) {
+			System.out.println(book.getTitle());
+		}
+		
+		assertEquals(2, listBooks.size());
+		
+	}
+	
+	@Test
+	public void test_ShouldSearchBookByDescription() {
+
+		String keyword = "big picture ";
+
+		List<Book> listBooks = bookDAOImpl.search(keyword);
+
+		for (Book book : listBooks) {
+			System.out.println(book.getTitle());
+		}
+		
+		assertEquals(1, listBooks.size());
+		
+
+		
 	}
 
 }

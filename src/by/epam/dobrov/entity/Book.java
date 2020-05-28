@@ -22,15 +22,31 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
+@Entity
+@Table(name = "book", catalog = "book_shop", uniqueConstraints = @UniqueConstraint(columnNames = "title"))
 @NamedQueries({ @NamedQuery(name = "Book.findAll", query = "Select b from Book b order by b.title"), // order by -
 																										// сортировать
 																										// по
 		@NamedQuery(name = "Book.findByTitle", query = "Select b from Book b where b.title= :title"),
+		@NamedQuery(name = "Book.findByIsbn", query = "Select b from Book b where b.isbn= :isbn"),
 		@NamedQuery(name = "Book.countAll", query = "Select COUNT(*) from Book b "),
+		@NamedQuery(name = "Book.findByCategory", query = "Select b from Book b join fetch "
+				+ "Category c ON b.category.categoryId = c.categoryId AND c.categoryId = :сatId"),
+
+		/*
+		 * //% - для соответствия нулю или более символов. || - конкатенация с кейвордом
+		 * в jpql
+		 */
+		@NamedQuery(name = "Book.searchBook", query = "Select b from Book b where b.title like '%' || :keyword || '%' "
+				+ "or b.author like '%' || :keyword || '%' or b.description like '%' || :keyword || '%' "),
+		/*
+		 * or b.author like :keyword or b.description like :keyword // используем join
+		 * on(Выбираются только те записи, которые совпадают в обоих таблицах.) чтобы
+		 * соединить 2 таблицы, бук и категори выбрать книги из табл книги и категории ,
+		 * где категорииИД книг = категориямИд и категорииИД = вызванному № категорииИД
+		 */
 
 })
-@Entity
-@Table(name = "book", catalog = "book_shop", uniqueConstraints = @UniqueConstraint(columnNames = "title"))
 public class Book implements java.io.Serializable {
 
 	private Integer bookId;
@@ -59,6 +75,18 @@ public class Book implements java.io.Serializable {
 
 	}
 
+	public Book(Category category, String title, String author, String description, String isbn, String base64Image,
+			float price) {
+		super();
+		this.category = category;
+		this.title = title;
+		this.author = author;
+		this.description = description;
+		this.isbn = isbn;
+		this.base64Image = base64Image;
+		this.price = price;
+	}
+
 	public Book(Category category, String title, String author, String description, String isbn, byte[] image,
 			float price, Set<OrderDetails> orderDetailses) {
 		this.category = category;
@@ -76,7 +104,9 @@ public class Book implements java.io.Serializable {
 
 	@Column(name = "book_id", unique = true, nullable = false)
 	public Integer getBookId() {
+
 		return this.bookId;
+
 	}
 
 	public void setBookId(Integer bookId) {
@@ -84,7 +114,7 @@ public class Book implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "category_id", nullable = false)
+	@JoinColumn(name = "categoryId", nullable = false)
 	public Category getCategory() {
 		return this.category;
 	}
@@ -156,7 +186,7 @@ public class Book implements java.io.Serializable {
 		this.orderDetailses = orderDetailses;
 	}
 
-	@Transient  //  имеется ввиду что геттер и сеттер не связаны ни с одним полем из БД
+	@Transient // имеется ввиду что геттер и сеттер не связаны ни с одним полем из БД
 	public String getBase64Image() {
 		this.base64Image = Base64.getEncoder().encodeToString(this.image);
 		return this.base64Image;

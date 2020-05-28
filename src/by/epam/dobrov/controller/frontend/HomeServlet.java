@@ -27,10 +27,16 @@ public class HomeServlet extends BaseServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
+		/*
+		 * Тут мы выводим все данные а именно списки категорий или книг которые будут
+		 * отображаться на главной странице, т.е. если юзер загружает главную страницу,
+		 * то он посылает запрос на эти списки
+		 */
+
 		CategoryDAOImpl categoryDAOImpl = new CategoryDAOImpl(entityManager);
 		List<Category> listCategory = categoryDAOImpl.listAll();
 		request.setAttribute("listCategory", listCategory);
-		
+
 		String homepage = "frontend/index.jsp";
 		RequestDispatcher dispatcher = request.getRequestDispatcher(homepage);
 		dispatcher.forward(request, response);
