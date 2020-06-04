@@ -46,3 +46,13 @@ button:hover {
 	color: red;
 	margin:5px;
 }
+
+div.center{
+	text-align:center;
+}
+
+div.book{
+	display:inline-block;
+	margin: 20px;
+	text-align: center;
+}

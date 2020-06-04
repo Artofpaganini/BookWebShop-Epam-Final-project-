@@ -24,7 +24,7 @@ public class UserDAOImplTest extends BaseDAOTest {
 	public static void setUpClass() {
 
 		BaseDAOTest.setUpClass();
-		userDAOImpl = new UserDAOImpl(entityManager);
+		userDAOImpl = new UserDAOImpl();
 
 	}
 
@@ -40,7 +40,7 @@ public class UserDAOImplTest extends BaseDAOTest {
 		user.setEmail("AidaShelby@gmail.com");
 		user.setFullName(" Aida Shelby");
 		user.setPassword("OrderByPeakyBlinders");
-		user.setBlock(false);
+
 
 		user = userDAOImpl.create(user);
 
@@ -61,15 +61,15 @@ public class UserDAOImplTest extends BaseDAOTest {
 
 		Users user = new Users();
 
-		user.setUsersId(14);
+		user.setUsersId(1);
 		user.setEmail("artofpaganini@gmail.com");
 		user.setFullName("Victor Dobrov");
-		user.setPassword("dd392247ba5fb724a83ed3f3869b3e9886e8ea4bbcdb178ad7c10d6693b20b8b");
+		user.setPassword("af9137edb8ab8397344f2e2fddc1af87543a46925ccc30a4ef40c66484ab68a0");
 
 		user = userDAOImpl.update(user);
 
 		String actual = user.getPassword();
-		String expected = "dd392247ba5fb724a83ed3f3869b3e9886e8ea4bbcdb178ad7c10d6693b20b8b";
+		String expected = "af9137edb8ab8397344f2e2fddc1af87543a46925ccc30a4ef40c66484ab68a0";
 
 		assertEquals(expected, actual);
 

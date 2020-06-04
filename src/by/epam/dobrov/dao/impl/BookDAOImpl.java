@@ -10,9 +10,10 @@ import by.epam.dobrov.entity.Users;
 
 public class BookDAOImpl extends JpaDAO<Book> implements GenericDAO<Book> {
 
-	public BookDAOImpl(EntityManager entityManager) {
-		super(entityManager);
+	
 
+	public BookDAOImpl() {
+		
 	}
 
 	@Override

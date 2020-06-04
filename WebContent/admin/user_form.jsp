@@ -50,18 +50,7 @@
 				<td><input type="password" id="password" name="password"
 					size="20" value="${user.password}" /></td>
 			</tr>
-			<tr>
-				<td>BlockStatus:</td>
-				<c:if test="${user != null}">
-					<td><input type="сheckbox" id="block" name="block" size="20"
-						value="${user.block}" /></td>
-				</c:if>
-				<c:if test="${user == null}">
-					<td><input type="сheckbox" id="block" name="block" size="20"
-						value="false" /></td>
-				</c:if>
 
-			</tr>
 			<tr>
 				<td>&nbsp;</td>
 			</tr>
@@ -100,7 +89,7 @@
 			messages : {
 				email : {
 					required : "Please enter email", // если поле пусто то будет эта надпись а если заполнено, но не имейл а мусор , то надпись ниже
-					email : "Please enter an valid email address"
+					email : "Please enter an valid email "
 				},
 
 				fullname : "Please enter fullname",

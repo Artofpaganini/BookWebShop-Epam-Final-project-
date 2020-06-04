@@ -23,17 +23,16 @@ public class CategoryServices {
 
 	private final static Logger LOGGER = LoggerFactory.getLogger(CategoryServices.class);
 
-	private EntityManager entityManager;
 	private CategoryDAOImpl categoryDAOImpl;
 	private HttpServletRequest request;
 	private HttpServletResponse response;
 
-	public CategoryServices(EntityManager entityManager, HttpServletRequest request, HttpServletResponse response) {
+	public CategoryServices(HttpServletRequest request, HttpServletResponse response) {
 
 		this.request = request;
 		this.response = response;
-		this.entityManager = entityManager;
-		categoryDAOImpl = new CategoryDAOImpl(entityManager);
+
+		categoryDAOImpl = new CategoryDAOImpl();
 	}
 
 	public void listCategory() throws ServletException, IOException {
@@ -137,7 +136,7 @@ public class CategoryServices {
 
 		Category categoryById = categoryDAOImpl.get(categoryId);
 
-		if (categoryById == null) {  // проверка возможно  эту категорию уже удалил другой админ
+		if (categoryById == null) { // проверка возможно эту категорию уже удалил другой админ
 			String message = "Could not find category with ID " + categoryId + ", or it might have been deleted";
 			request.setAttribute("message", message);
 			request.getRequestDispatcher("message.jsp").forward(request, response);

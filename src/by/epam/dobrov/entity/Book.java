@@ -58,7 +58,7 @@ public class Book implements java.io.Serializable {
 	private byte[] image;
 	private String base64Image;
 	private float price;
-	private Set<OrderDetails> orderDetailses = new HashSet<OrderDetails>(0);
+	private Set<OrderDetail> orderDetailses = new HashSet<OrderDetail>(0);
 
 	public Book() {
 	}
@@ -75,6 +75,16 @@ public class Book implements java.io.Serializable {
 
 	}
 
+	/*
+	 * для корзины и добавления книг мы создаем отдельный конструктор чтобы
+	 * инициализировать тест прямо при добавлении в корзину, т.е сразу в addItem
+	 */
+
+	public Book(Integer bookId) {
+		super();
+		this.bookId = bookId;
+	}
+
 	public Book(Category category, String title, String author, String description, String isbn, String base64Image,
 			float price) {
 		super();
@@ -88,7 +98,7 @@ public class Book implements java.io.Serializable {
 	}
 
 	public Book(Category category, String title, String author, String description, String isbn, byte[] image,
-			float price, Set<OrderDetails> orderDetailses) {
+			float price, Set<OrderDetail> orderDetailses) {
 		this.category = category;
 		this.title = title;
 		this.author = author;
@@ -113,7 +123,13 @@ public class Book implements java.io.Serializable {
 		this.bookId = bookId;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	/*
+	 * EAGER загрузка коллекций означает, что они извлекаются полностью в момент
+	 * извлечения их родителя. Таким образом , если у вас есть Course и у него есть
+	 * List<Student>, все студенты извлекаются из базы данных в то время, когда
+	 * извлекается Course .
+	 */
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "categoryId", nullable = false)
 	public Category getCategory() {
 		return this.category;
@@ -178,11 +194,11 @@ public class Book implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "book")
-	public Set<OrderDetails> getOrderDetailses() {
+	public Set<OrderDetail> getOrderDetailses() {
 		return this.orderDetailses;
 	}
 
-	public void setOrderDetailses(Set<OrderDetails> orderDetailses) {
+	public void setOrderDetailses(Set<OrderDetail> orderDetailses) {
 		this.orderDetailses = orderDetailses;
 	}
 
@@ -199,6 +215,31 @@ public class Book implements java.io.Serializable {
 	@Transient
 	public void setBase64Image(String base64Image) {
 		this.base64Image = base64Image;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((bookId == null) ? 0 : bookId.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Book other = (Book) obj;
+		if (bookId == null) {
+			if (other.bookId != null)
+				return false;
+		} else if (!bookId.equals(other.bookId))
+			return false;
+		return true;
 	}
 
 }

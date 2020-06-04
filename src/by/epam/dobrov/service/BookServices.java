@@ -23,20 +23,19 @@ public class BookServices {
 
 	private final static Logger LOGGER = LoggerFactory.getLogger(BookServices.class);
 
-	private EntityManager entityManager;
 	private BookDAOImpl bookDAOImpl;
 	private CategoryDAOImpl categoryDAOImpl; // нужен для извлечения списка категорий, и занесения в опред категории ,
 												// определенные книги
 	private HttpServletRequest request;
 	private HttpServletResponse response;
 
-	public BookServices(EntityManager entityManager, HttpServletRequest request, HttpServletResponse response) {
+	public BookServices(HttpServletRequest request, HttpServletResponse response) {
 		super();
-		this.entityManager = entityManager;
 		this.request = request;
 		this.response = response;
-		bookDAOImpl = new BookDAOImpl(entityManager);
-		categoryDAOImpl = new CategoryDAOImpl(entityManager);
+		
+		bookDAOImpl = new BookDAOImpl();
+		categoryDAOImpl = new CategoryDAOImpl();
 	}
 
 	public void listBooks() throws ServletException, IOException { // перегруз метода , без сообщения, нужен для того
@@ -170,8 +169,8 @@ public class BookServices {
 		Integer bookId = Integer.parseInt(request.getParameter("id"));
 		Book book = bookDAOImpl.get(bookId);
 
+	
 		String editPage = "book_form.jsp";
-
 		/*
 		 * если полученная книга не null то вызываем список категорий и работаем с
 		 * данными этой книги, иначе выводим сообщение что книги с эти ид нет!
@@ -205,7 +204,7 @@ public class BookServices {
 
 		Integer bookId = Integer.parseInt(request.getParameter("bookId"));
 		String title = request.getParameter("title");
-		String isbn = request.getParameter("isbn");
+
 
 		Book existBookById = bookDAOImpl.get(bookId); // вызываем нужную нам книгу из БД по ИД
 		Book existBookByTitle = bookDAOImpl.findByTitle(title);
@@ -277,10 +276,7 @@ public class BookServices {
 
 		List<Book> listBooks = bookDAOImpl.listBookByCategory(categoryId);
 		Category category = categoryDAOImpl.get(categoryId);
-		List<Category> listCategory = categoryDAOImpl.listAll();// получаем полный список категорий,чтобы при выборе
-																// конкретной , остальные не пропадали из header
 
-		request.setAttribute("listCategory", listCategory);
 		request.setAttribute("category", category);
 		request.setAttribute("listBooks", listBooks);
 		/*
@@ -305,12 +301,9 @@ public class BookServices {
 		Integer bookId = Integer.parseInt(request.getParameter("id"));
 
 		Book book = bookDAOImpl.get(bookId);
-		List<Category> listCategory = categoryDAOImpl.listAll();// получаем полный список категорий,чтобы при выборе
-																// конкретной , остальные не пропадали из header
-
+		
 		request.setAttribute("book", book);
-		request.setAttribute("listCategory", listCategory);
-
+	
 		String detailPage = "frontend/book_detail.jsp";
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(detailPage);
 		requestDispatcher.forward(request, response);

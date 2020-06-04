@@ -14,18 +14,17 @@ import by.epam.dobrov.entity.Users;
 
 public class UserDAOImpl extends JpaDAO<Users> implements GenericDAO<Users> {
 
-	public UserDAOImpl(EntityManager entityManager) {// тут вызываем ЕМ из JPADAO
-		super(entityManager);
+	public UserDAOImpl() {// С‚СѓС‚ РІС‹Р·С‹РІР°РµРј Р•Рњ РёР· JPADAO
 
 	}
 
 	@Override
 	public Users create(Users user) {
 		/*
-		 * при создании мы передаем пасс generateSHA256, где пароль передается в
-		 * hashstring и там конвертируется с помощью байтов в 16-ричную систему и
-		 * возвращается и присваиется тут в encryptedPassword, после чего
-		 * encryptedPassword устанавливается как пароль для юзера
+		 * РїСЂРё СЃРѕР·РґР°РЅРёРё РјС‹ РїРµСЂРµРґР°РµРј РїР°СЃСЃ generateSHA256, РіРґРµ РїР°СЂРѕР»СЊ РїРµСЂРµРґР°РµС‚СЃСЏ РІ
+		 * hashstring Рё С‚Р°Рј РєРѕРЅРІРµСЂС‚РёСЂСѓРµС‚СЃСЏ СЃ РїРѕРјРѕС‰СЊСЋ Р±Р°Р№С‚РѕРІ РІ 16-СЂРёС‡РЅСѓСЋ СЃРёСЃС‚РµРјСѓ Рё
+		 * РІРѕР·РІСЂР°С‰Р°РµС‚СЃСЏ Рё РїСЂРёСЃРІР°РёРµС‚СЃСЏ С‚СѓС‚ РІ encryptedPassword, РїРѕСЃР»Рµ С‡РµРіРѕ
+		 * encryptedPassword СѓСЃС‚Р°РЅР°РІР»РёРІР°РµС‚СЃСЏ РєР°Рє РїР°СЂРѕР»СЊ РґР»СЏ СЋР·РµСЂР°
 		 */
 		String encryptedPassword = HashGenerator.generateSHA256(user.getPassword());
 		user.setPassword(encryptedPassword);
@@ -46,9 +45,9 @@ public class UserDAOImpl extends JpaDAO<Users> implements GenericDAO<Users> {
 	public Users findByEmail(String email) {
 
 		/*
-		 * поиск ищет конкретный имейл в бд , если находит то закидывает в этот
-		 * лист(работает даже если в бд 2 одинаковых мыла), если не находит то лист
-		 * будет null
+		 * РїРѕРёСЃРє РёС‰РµС‚ РєРѕРЅРєСЂРµС‚РЅС‹Р№ РёРјРµР№Р» РІ Р±Рґ , РµСЃР»Рё РЅР°С…РѕРґРёС‚ С‚Рѕ Р·Р°РєРёРґС‹РІР°РµС‚ РІ СЌС‚РѕС‚
+		 * Р»РёСЃС‚(СЂР°Р±РѕС‚Р°РµС‚ РґР°Р¶Рµ РµСЃР»Рё РІ Р±Рґ 2 РѕРґРёРЅР°РєРѕРІС‹С… РјС‹Р»Р°), РµСЃР»Рё РЅРµ РЅР°С…РѕРґРёС‚ С‚Рѕ Р»РёСЃС‚
+		 * Р±СѓРґРµС‚ null
 		 */
 
 		List<Users> usersList = super.findByNamedQuery("Users.findByEmail", "email", email);
@@ -62,7 +61,7 @@ public class UserDAOImpl extends JpaDAO<Users> implements GenericDAO<Users> {
 	public boolean checkLogin(String email, String password) {
 
 		Map<String, Object> parameters = new HashMap<>();
-		
+
 		String encryptedPassword = HashGenerator.generateSHA256(password);
 		parameters.put("email", email);
 		parameters.put("password", encryptedPassword);
@@ -83,12 +82,7 @@ public class UserDAOImpl extends JpaDAO<Users> implements GenericDAO<Users> {
 		super.delete(Users.class, userId);
 	}
 
-	@Override
-	public Users block(Users user) {
-
-		return super.block(user);
-	}
-
+	
 	@Override
 	public List<Users> listAll() {
 		return super.findByNamedQuery("Users.findAll");

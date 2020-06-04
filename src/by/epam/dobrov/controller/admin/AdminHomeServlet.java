@@ -31,7 +31,7 @@ public class AdminHomeServlet extends HttpServlet {
 			throws ServletException, IOException {
 		String adminHomepage = "index.jsp";
 
-	
+
 		RequestDispatcher dispatcher = request.getRequestDispatcher(adminHomepage);
 
 		dispatcher.forward(request, response);

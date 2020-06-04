@@ -27,7 +27,6 @@
 				<th>ID</th>
 				<th>Email</th>
 				<th>Full Name</th>
-				<th>BlockStatus</th>
 				<th>Actions</th>
 			</tr>
 			<c:forEach var="user" items="${listUsers}" varStatus="status">
@@ -37,7 +36,7 @@
 					<td>${user.usersId}</td>
 					<td>${user.email}</td>
 					<td>${user.fullName}</td>
-					<td>${user.block}</td>
+
 
 					<td><a href="edit_user?id=${user.usersId }">Edit</a> &nbsp <!-- &nbsp  неразрывный пробел -->
 						<a href="javascript:confirmDelete(${user.usersId})">Delete</a>

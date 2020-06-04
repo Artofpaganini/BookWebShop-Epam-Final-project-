@@ -23,7 +23,7 @@ public class CategoryDAOImplTest extends BaseDAOTest {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		BaseDAOTest.setUpClass();
-		categoryDAOImpl = new CategoryDAOImpl(entityManager);
+		categoryDAOImpl = new CategoryDAOImpl();
 	}
 
 	@AfterClass

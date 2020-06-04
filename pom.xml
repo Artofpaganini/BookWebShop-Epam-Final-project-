@@ -101,6 +101,7 @@
 			<artifactId>hibernate-core</artifactId>
 			<version>5.2.18.Final</version>
 		</dependency>
+
 	</dependencies>
-	
+
 </project>

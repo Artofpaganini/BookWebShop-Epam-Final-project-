@@ -25,7 +25,7 @@ public class BookDAOImplTest extends BaseDAOTest {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		BaseDAOTest.setUpClass();
-		bookDAOImpl = new BookDAOImpl(entityManager);
+		bookDAOImpl = new BookDAOImpl();
 
 	}
 

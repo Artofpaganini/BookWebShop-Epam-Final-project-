@@ -1,22 +1,18 @@
 package by.epam.dobrov.controller.admin.user;
 
 import java.io.IOException;
-import java.util.List;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import by.epam.dobrov.controller.BaseServlet;
-import by.epam.dobrov.entity.Users;
 import by.epam.dobrov.service.UsersServices;
 
 @WebServlet("/admin/list_users") // через этот URL мы посылаем запрос к этому сервлету, запрос идет в метод ДУГЕТ
 									// и передаем в него request
-public class ListUsersServlet extends BaseServlet {
+public class ListUsersServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	public ListUsersServlet() {
@@ -28,7 +24,7 @@ public class ListUsersServlet extends BaseServlet {
 																					// сервера,для изменения и получения
 			throws ServletException, IOException {
 
-		UsersServices usersServices = new UsersServices(entityManager, request, response);
+		UsersServices usersServices = new UsersServices(request, response);
 		usersServices.listUser(); // весь бизнес код находится в listUser
 
 	} // перенаправить запрос из сервлета на другой сервлет, html-страницу или

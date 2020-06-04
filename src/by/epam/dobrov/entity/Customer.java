@@ -1,7 +1,6 @@
 package by.epam.dobrov.entity;
 // Generated 06.05.2020 11:19:20 by Hibernate Tools 5.2.12.Final
 
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Column;
@@ -10,10 +9,10 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
 /**
@@ -21,6 +20,10 @@ import javax.persistence.UniqueConstraint;
  */
 @Entity
 @Table(name = "customer", catalog = "book_shop", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
+@NamedQueries({ @NamedQuery(name = "Customer.findAll", query = "Select cs from Customer cs order by cs.fullName"),
+		@NamedQuery(name = "Customer.findByEmail", query = "Select cs from Customer cs where cs.email= :email"),
+		@NamedQuery(name = "Customer.countAll", query = "Select COUNT(*) from Customer cs "),
+		@NamedQuery(name = "Customer.checkLogin", query = "Select cs from Customer cs where cs.email = :email and cs.password = :password") })
 public class Customer implements java.io.Serializable {
 
 	private Integer customerId;
@@ -32,14 +35,16 @@ public class Customer implements java.io.Serializable {
 	private String phone;
 	private String zipCode;
 	private String password;
-	private Date registerDate;
-	private Set<Order> orders = new HashSet<Order>(0);
+
+	private boolean block = false;
+
+	private Set<BookOrder> orders = new HashSet<BookOrder>(0);
 
 	public Customer() {
 	}
 
 	public Customer(String email, String fullName, String address, String city, String country, String phone,
-			String zipCode, String password, Date registerDate) {
+			String zipCode, String password) {
 		this.email = email;
 		this.fullName = fullName;
 		this.address = address;
@@ -48,11 +53,11 @@ public class Customer implements java.io.Serializable {
 		this.phone = phone;
 		this.zipCode = zipCode;
 		this.password = password;
-		this.registerDate = registerDate;
+
 	}
 
 	public Customer(String email, String fullName, String address, String city, String country, String phone,
-			String zipCode, String password, Date registerDate, Set<Order> orders) {
+			String zipCode, String password, Set<BookOrder> orders) {
 		this.email = email;
 		this.fullName = fullName;
 		this.address = address;
@@ -61,8 +66,22 @@ public class Customer implements java.io.Serializable {
 		this.phone = phone;
 		this.zipCode = zipCode;
 		this.password = password;
-		this.registerDate = registerDate;
 		this.orders = orders;
+	}
+
+	public Customer(String email, String fullName, String address, String city, String country, String phone,
+			String zipCode, String password, boolean block) {
+		super();
+		this.email = email;
+		this.fullName = fullName;
+		this.address = address;
+		this.city = city;
+		this.country = country;
+		this.phone = phone;
+		this.zipCode = zipCode;
+		this.password = password;
+		this.block = block;
+
 	}
 
 	@Id
@@ -149,22 +168,21 @@ public class Customer implements java.io.Serializable {
 		this.password = password;
 	}
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "register_date", nullable = false, length = 19)
-	public Date getRegisterDate() {
-		return this.registerDate;
+	@Column(name = "block", nullable = false)
+	public boolean isBlock() {
+		return block;
 	}
 
-	public void setRegisterDate(Date registerDate) {
-		this.registerDate = registerDate;
+	public void setBlock(boolean block) {
+		this.block = block;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
-	public Set<Order> getOrders() {
+	public Set<BookOrder> getOrders() {
 		return this.orders;
 	}
 
-	public void setOrders(Set<Order> orders) {
+	public void setOrders(Set<BookOrder> orders) {
 		this.orders = orders;
 	}
 

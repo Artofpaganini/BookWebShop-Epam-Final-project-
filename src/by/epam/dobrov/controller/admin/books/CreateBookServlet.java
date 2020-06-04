@@ -1,13 +1,15 @@
 package by.epam.dobrov.controller.admin.books;
 
-import by.epam.dobrov.controller.BaseServlet;
+
 import by.epam.dobrov.dao.impl.BookDAOImpl;
 import by.epam.dobrov.service.BookServices;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -29,7 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 		maxRequestSize = 1024 * 1024 //это максимальный размер запроса, включая как загруженные файлы, так и другие данные формы (размер в байтах) 1МБ
 )
 
-public class CreateBookServlet extends BaseServlet {
+public class CreateBookServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	public CreateBookServlet() {
@@ -39,7 +41,7 @@ public class CreateBookServlet extends BaseServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		BookServices bookServices = new BookServices(entityManager, request, response);
+		BookServices bookServices = new BookServices( request, response);
 		bookServices.createNewBook();
 	}
 

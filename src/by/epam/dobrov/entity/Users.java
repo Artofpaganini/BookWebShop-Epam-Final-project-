@@ -2,38 +2,29 @@ package by.epam.dobrov.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import com.oracle.wls.shaded.org.apache.bcel.generic.Select;
-
-
-@NamedQueries({ 
-		@NamedQuery(name = "Users.findAll", query = "Select u from Users u order by u.fullName"),
-		@NamedQuery(name = "Users.findByEmail", query = "Select u from Users u where u.email= :email"),
-		@NamedQuery(name = "Users.countAll", query = "Select COUNT(*) from Users u "),
-		@NamedQuery(name = "Users.checkLogin", query = "Select u from Users u where u.email =:email and u.password =:password") 
-		})
-//параметр по которому будет искать тут работает через : и имя параметра
+//РїР°СЂР°РјРµС‚СЂ РїРѕ РєРѕС‚РѕСЂРѕРјСѓ Р±СѓРґРµС‚ РёСЃРєР°С‚СЊ С‚СѓС‚ СЂР°Р±РѕС‚Р°РµС‚ С‡РµСЂРµР· : Рё РёРјСЏ РїР°СЂР°РјРµС‚СЂР°
 @Entity
 @Table(name = "users", catalog = "book_shop", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
+@NamedQueries({ @NamedQuery(name = "Users.findAll", query = "Select u from Users u order by u.fullName"),
+		@NamedQuery(name = "Users.findByEmail", query = "Select u from Users u where u.email= :email"),
+		@NamedQuery(name = "Users.countAll", query = "Select COUNT(*) from Users u "),
+		@NamedQuery(name = "Users.checkLogin", query = "Select u from Users u where u.email =:email and u.password =:password") })
 public class Users implements java.io.Serializable {
 
-	private Integer usersId;
+	           private Integer usersId;
 
 	private String email;
-	private String password;
+	    private String password;
 	private String fullName;
-
-	private boolean block = false;
 
 	public Users() {
 	}
@@ -45,19 +36,13 @@ public class Users implements java.io.Serializable {
 
 	}
 
-	public Users(Integer usersId, String email, String fullName, String password) {
-		this(email, fullName, password);
-		this.usersId = usersId;
-
-	}
-
-	public Users(Integer usersId, String email, String password, String fullName, boolean block) {
+	public Users(Integer usersId, String email, String password, String fullName) {
 
 		this.usersId = usersId;
 		this.email = email;
 		this.password = password;
 		this.fullName = fullName;
-		this.block = block;
+
 	}
 
 	@Id
@@ -97,15 +82,6 @@ public class Users implements java.io.Serializable {
 
 	public void setFullName(String fullName) {
 		this.fullName = fullName;
-	}
-
-	@Column(name = "block", nullable = false)
-	public boolean isBlock() {
-		return block;
-	}
-
-	public void setBlock(boolean block) {
-		this.block = block;
 	}
 
 }

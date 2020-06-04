@@ -1,14 +1,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <div align="center">
 	<div>
-		<img src="../images/logoAdmin.png" />
-		
-		
+		<a href="${pageContext.request.contextPath }/admin/"> <img
+			src="../images/logoAdmin.png" />
+		</a>
 	</div>
 
 	<div>
 		Welcome,
-		<c:out value="${sessionScope.useremail }"></c:out>  <!--sessionScope -	Контекст сессии. Переменные доступны в течение всей сессии пользователя, т.е. пока не будет закрыт браузер или не закончится предельное время бездействия.  -->
+		<c:out value="${sessionScope.useremail }"></c:out>
+		<!--sessionScope -	Контекст сессии. Переменные доступны в течение всей сессии пользователя, т.е. пока не будет закрыт браузер или не закончится предельное время бездействия.  -->
 		| <a href="logout">Logout</a> <br /> <br />
 	</div>
 
@@ -31,12 +32,12 @@
 		</div>
 
 		<div>
-			<a href="customer"> <img src="../images/customer.png" /><br />Customers
+			<a href="list_customer"> <img src="../images/customer.png" /><br />Customers
 			</a>
 		</div>
 
 		<div>
-			<a href="orders"> <img src="../images/order.png" /><br />Orders
+			<a href="list_orders"> <img src="../images/order.png" /><br />Orders
 			</a>
 		</div>
 

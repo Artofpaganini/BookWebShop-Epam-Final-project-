@@ -11,9 +11,8 @@ import by.epam.dobrov.entity.Users;
 
 public class CategoryDAOImpl extends JpaDAO<Category> implements GenericDAO<Category> {
 
-	public CategoryDAOImpl(EntityManager entityManager) {
-		super(entityManager);
-		// TODO Auto-generated constructor stub
+	public CategoryDAOImpl() {
+		
 	}
 
 	@Override
