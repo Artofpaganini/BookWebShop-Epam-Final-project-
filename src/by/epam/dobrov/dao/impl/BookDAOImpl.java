@@ -73,13 +73,11 @@ public class BookDAOImpl extends JpaDAO<Book> implements GenericDAO<Book> {
 
 		return super.findByNamedQuery("Book.searchBook", "keyword", keyword);
 	}
+	
+	public List<Book> listBestSellingBooks () {
+		
+		return super.findByNamedQuery("OrderDetail.bestSelling", 0, 4);
+		
+	}
 
 }
-
-/*
- * List<Book> bookList = super.findByNamedQuery("Book.findByTitle", "title",
- * title);
- * 
- * if (usersList != null && usersList.size() > 0) { return usersList.get(0); }
- * return null;
- */

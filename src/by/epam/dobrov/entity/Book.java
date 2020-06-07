@@ -58,7 +58,7 @@ public class Book implements java.io.Serializable {
 	private byte[] image;
 	private String base64Image;
 	private float price;
-	private Set<OrderDetail> orderDetailses = new HashSet<OrderDetail>(0);
+	private Set<OrderDetail> orderDetails = new HashSet<OrderDetail>(0);
 
 	public Book() {
 	}
@@ -106,7 +106,7 @@ public class Book implements java.io.Serializable {
 		this.isbn = isbn;
 		this.image = image;
 		this.price = price;
-		this.orderDetailses = orderDetailses;
+		this.orderDetails = orderDetailses;
 	}
 
 	@Id
@@ -193,13 +193,13 @@ public class Book implements java.io.Serializable {
 		this.price = price;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "book")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "book")
 	public Set<OrderDetail> getOrderDetailses() {
-		return this.orderDetailses;
+		return this.orderDetails;
 	}
 
 	public void setOrderDetailses(Set<OrderDetail> orderDetailses) {
-		this.orderDetailses = orderDetailses;
+		this.orderDetails = orderDetailses;
 	}
 
 	@Transient // имеется ввиду что геттер и сеттер не связаны ни с одним полем из БД

@@ -152,5 +152,20 @@ public class JpaDAO<E> {// Целью JpaDAO является предоставление общих операций,
 		return resultCount;
 
 	}
+	
+	public List<E> findByNamedQuery(String queryName,int firstResult, int maxResult) {
+		/*
+		 * метод реализует именной запрос  на 4 значения , это для вывода  бест селлинг букс
+		 */
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		Query query = entityManager.createNamedQuery(queryName);
+
+		query.setFirstResult(firstResult);
+		query.setMaxResults(maxResult);
+		List<E> resultList = query.getResultList();
+		
+		entityManager.close();
+		return resultList;
+	}
 
 }

@@ -28,7 +28,12 @@ import javax.persistence.TemporalType;
 @Table(name = "book_order", catalog = "book_shop")
 @NamedQueries({
 		@NamedQuery(name = "BookOrder.findAll", query = "Select bo from BookOrder bo order by bo.orderDate DESC"),
-		@NamedQuery(name = "BookOrder.countAll", query = "Select COUNT(*) from BookOrder bo ")})
+		@NamedQuery(name = "BookOrder.countAll", query = "Select COUNT(*) from BookOrder bo "),
+		@NamedQuery(name = "BookOrder.findByCustomer", 
+		query = "Select bo from BookOrder bo where bo.customer.customerId =:customerId order by bo.orderDate DESC"),
+		@NamedQuery(name = "BookOrder.findByIdAndCustomer", 
+		query ="Select bo from BookOrder bo where bo.orderId =:orderId and bo.customer.customerId =:customerId")
+		})
 public class BookOrder implements java.io.Serializable {
 
 	private int orderId;
@@ -36,7 +41,7 @@ public class BookOrder implements java.io.Serializable {
 	private Date orderDate;
 	private String shippingAddress;
 	private String recipientName;
-	private String recepientPhone;
+	private String recipientPhone;
 	private String paymentMethod;
 	private float orderTotal;
 	private String orderStatus;
@@ -46,25 +51,25 @@ public class BookOrder implements java.io.Serializable {
 	}
 
 	public BookOrder(Customer customer, Date orderDate, String shippingAddress, String recipientName,
-			String recepientPhone, String paymentMethod, float orderTotal, String orderStatus) {
+			String recipientPhone, String paymentMethod, float orderTotal, String orderStatus) {
 		this.customer = customer;
 		this.orderDate = orderDate;
 		this.shippingAddress = shippingAddress;
 		this.recipientName = recipientName;
-		this.recepientPhone = recepientPhone;
+		this.recipientPhone = recipientPhone;
 		this.paymentMethod = paymentMethod;
 		this.orderTotal = orderTotal;
 		this.orderStatus = orderStatus;
 	}
 
 	public BookOrder(Customer customer, Date orderDate, String shippingAddress, String recipientName,
-			String recepientPhone, String paymentMethod, float orderTotal, String orderStatus,
+			String recipientPhone, String paymentMethod, float orderTotal, String orderStatus,
 			Set<OrderDetail> orderDetailses) {
 		this.customer = customer;
 		this.orderDate = orderDate;
 		this.shippingAddress = shippingAddress;
 		this.recipientName = recipientName;
-		this.recepientPhone = recepientPhone;
+		this.recipientPhone = recipientPhone;
 		this.paymentMethod = paymentMethod;
 		this.orderTotal = orderTotal;
 		this.orderStatus = orderStatus;
@@ -82,7 +87,7 @@ public class BookOrder implements java.io.Serializable {
 		this.orderId = orderId;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "customer_id", nullable = false)
 	public Customer getCustomer() {
 		return this.customer;
@@ -120,13 +125,13 @@ public class BookOrder implements java.io.Serializable {
 		this.recipientName = recipientName;
 	}
 
-	@Column(name = "recepient_phone", nullable = false, length = 45)
-	public String getRecepientPhone() {
-		return this.recepientPhone;
+	@Column(name = "recipient_phone", nullable = false, length = 45)
+	public String getRecipientPhone() {
+		return this.recipientPhone;
 	}
 
-	public void setRecepientPhone(String recepientPhone) {
-		this.recepientPhone = recepientPhone;
+	public void setRecipientPhone(String recipientPhone) {
+		this.recipientPhone = recipientPhone;
 	}
 
 	@Column(name = "payment_method", nullable = false, length = 45)
@@ -156,13 +161,13 @@ public class BookOrder implements java.io.Serializable {
 		this.orderStatus = orderStatus;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "bookOrder", cascade = CascadeType.ALL, orphanRemoval = true)
-	public Set<OrderDetail> getOrderDetailses() {
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "bookOrder", cascade = CascadeType.ALL, orphanRemoval = true)
+	public Set<OrderDetail> getOrderDetails() {
 		return this.orderDetails;
 	}
 
-	public void setOrderDetailses(Set<OrderDetail> orderDetailses) {
-		this.orderDetails = orderDetailses;
+	public void setOrderDetails(Set<OrderDetail> orderDetails) {
+		this.orderDetails = orderDetails;
 	}
 
 	@Override

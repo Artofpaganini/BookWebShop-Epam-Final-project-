@@ -83,6 +83,24 @@ public class Customer implements java.io.Serializable {
 		this.block = block;
 
 	}
+	
+	
+
+	public Customer(Integer customerId, String email, String fullName, String address, String city, String country,
+			String phone, String zipCode, String password, boolean block, Set<BookOrder> orders) {
+		super();
+		this.customerId = customerId;
+		this.email = email;
+		this.fullName = fullName;
+		this.address = address;
+		this.city = city;
+		this.country = country;
+		this.phone = phone;
+		this.zipCode = zipCode;
+		this.password = password;
+		this.block = block;
+		this.orders = orders;
+	}
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
@@ -177,7 +195,7 @@ public class Customer implements java.io.Serializable {
 		this.block = block;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "customer")
 	public Set<BookOrder> getOrders() {
 		return this.orders;
 	}

@@ -43,7 +43,7 @@ public class OrderDAOImplTest {
 
 		order.setCustomer(customer);
 		order.setRecipientName("John Shelby123");
-		order.setRecepientPhone("123123123");
+		order.setRecipientPhone("123123123");
 		order.setShippingAddress("123");
 
 		Set<OrderDetail> orderDetails = new HashSet<>();
@@ -67,7 +67,7 @@ public class OrderDAOImplTest {
 		orderDetails.add(orderDetail1);
 		orderDetails.add(orderDetail2);
 
-		order.setOrderDetailses(orderDetails);
+		order.setOrderDetails(orderDetails);
 
 		orderDAOImpl.create(order);
 
@@ -78,18 +78,17 @@ public class OrderDAOImplTest {
 	public void test_ShouldCreateBookOrderWithOneBooks() {
 		BookOrder order = new BookOrder();
 		Customer customer = new Customer();
-		customer.setCustomerId(58);
+		customer.setCustomerId(18);
 
 		order.setCustomer(customer);
-		order.setRecipientName("John Shelby");
-		order.setRecepientPhone("123123123");
-		order.setShippingAddress("12345");
+		order.setRecipientName("Artur Shelby");
+		order.setRecipientPhone("12323123123");
+		order.setShippingAddress("12345678");
 
 		Set<OrderDetail> orderDetails = new HashSet<>();
 		OrderDetail orderDetail = new OrderDetail();
 
-		Book book = new Book(21);
-
+		Book book = new Book(17);
 		orderDetail.setBook(book);
 		orderDetail.setQuantity(1);
 		orderDetail.setSubTotal(25.65f);
@@ -97,7 +96,7 @@ public class OrderDAOImplTest {
 
 		orderDetails.add(orderDetail);
 
-		order.setOrderDetailses(orderDetails);
+		order.setOrderDetails(orderDetails);
 
 		orderDAOImpl.create(order);
 
@@ -109,7 +108,7 @@ public class OrderDAOImplTest {
 
 		Integer orderId = 11;
 		BookOrder order = orderDAOImpl.get(orderId);
-		order.setShippingAddress("Grodno");
+		order.setShippingAddress("Grodno123");
 
 		orderDAOImpl.update(order);
 
@@ -124,17 +123,17 @@ public class OrderDAOImplTest {
 		BookOrder bookOrder = orderDAOImpl.get(orderId);
 
 		System.out.println(bookOrder.getRecipientName());
-		assertEquals(2, bookOrder.getOrderDetailses().size());
+		assertEquals(2, bookOrder.getOrderDetails().size());
 	}
 
 	@Test
 	public void test_ShouldDeleteOrder() {
 		Integer orderId = 1;
-		
+
 		orderDAOImpl.delete(orderId);
-		
+
 		BookOrder bookOrder = orderDAOImpl.get(orderId);
-		
+
 		assertNull(bookOrder);
 	}
 
@@ -151,8 +150,47 @@ public class OrderDAOImplTest {
 	@Test
 	public void test_ShouldCountOrders() {
 		long totalOrdersQuantity = orderDAOImpl.count();
-		
-		assertEquals(3, totalOrdersQuantity);
+
+		assertEquals(2, totalOrdersQuantity);
 	}
 
+	@Test
+	public void test_ShouldShowListByCustomerWithNoOrders() {
+		Integer customerId = 99;
+
+		List<BookOrder> listOrders = orderDAOImpl.listByCustomer(customerId);
+
+		assertTrue(listOrders.isEmpty());
+	}
+
+	@Test
+	public void test_ShouldShowListByCustomerWithOrders() {
+		Integer customerId = 51;
+
+		List<BookOrder> listOrders = orderDAOImpl.listByCustomer(customerId);
+
+		assertTrue(listOrders.size() > 0);
+	}
+
+	@Test
+	public void test_ShouldNotGetByIdAndCustomer() {
+		Integer orderId = 9;
+		Integer customerId = 99;
+
+		
+		BookOrder order = orderDAOImpl.get(orderId, customerId);
+		
+		assertNull(order);
+	}
+	
+	@Test
+	public void test_ShouldGetByIdAndCustomer() {
+		Integer orderId = 11;
+		Integer customerId = 51;
+
+		
+		BookOrder order = orderDAOImpl.get(orderId, customerId);
+		
+		assertNotNull(order);
+	}
 }

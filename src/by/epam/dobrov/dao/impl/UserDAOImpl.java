@@ -94,7 +94,7 @@ public class UserDAOImpl extends JpaDAO<Users> implements GenericDAO<Users> {
 
 	@Override
 	public long count() {
-		long count = super.findCountByNamedQuery("Users.CountAll");
+		long count = super.findCountByNamedQuery("Users.countAll");
 
 		return count;
 	}

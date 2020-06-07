@@ -37,12 +37,7 @@
 		</div>
 
 		<div>
-			<a href="list_orders"> <img src="../images/order.png" /><br />Orders
-			</a>
-		</div>
-
-		<div>
-			<a href="blackList"> <img src="../images/black_list.png" /><br />BlackList
+			<a href="list_order"> <img src="../images/order.png" /><br />Orders
 			</a>
 		</div>
 

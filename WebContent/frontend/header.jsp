@@ -24,7 +24,7 @@
 			
 			<c:if test="${loggedCustomer != null }">
 				<a href="view_profile">Welcome, ${loggedCustomer.fullName}</a> |
-				<a href="view_orders">My Orders</a> | 
+				<a href="view_orders">My Orders</a> |
 				<a href="view_cart">Cart</a> |
 				<a href="logout">Sign out</a>
 			</c:if>

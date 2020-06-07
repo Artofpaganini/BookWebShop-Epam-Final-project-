@@ -15,6 +15,13 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "order_detail", catalog = "book_shop")
+@NamedQueries({
+	@NamedQuery (name = "OrderDetail.bestSelling",
+			query = "Select od.book from OrderDetail od group by od.book.bookId order by sum(od.quantity) desc")
+	/*
+	 * вырбрать все »ƒ и сумму кол-в из ордер дител групиру€  по »ƒ и сортиру€ по сумме кол-в
+	 */
+})
 
 public class OrderDetail implements java.io.Serializable {
 
@@ -52,7 +59,7 @@ public class OrderDetail implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "book_id", insertable = false, updatable = false, nullable = false)
 	public Book getBook() {
 		return this.book;
@@ -63,7 +70,7 @@ public class OrderDetail implements java.io.Serializable {
 		this.id.setBook(book);
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "order_id", insertable = false, updatable = false, nullable = false)
 	public BookOrder getBookOrder() {
 		return this.order;

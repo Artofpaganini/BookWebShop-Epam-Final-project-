@@ -13,18 +13,14 @@
 	<div align="center">
 		<hr width="60%">
 
-		<h2>Quick Actions</h2>
+		<h2>Statistics</h2>
 
-		<div>
-			<b> <a href="create_book">New Book</a> | <a href="create_user">New
-					User</a> | <a href="create_category">New Category</a> | <a
-				href="create_customer">New Customer</a>
-			</b>
-			<hr width="60%">
-		</div>
-		<h2>Resent Sales</h2>
-		<hr width="60%">
-		<h2>Black list</h2>
+		Total UserAdmin: ${totalUsers} &nbsp;&nbsp;&nbsp;&nbsp; 
+		Total Books: ${totalBooks} &nbsp;&nbsp;&nbsp;&nbsp;
+		Total Categories: ${totalCategories} &nbsp;&nbsp;&nbsp;&nbsp;
+		Total Customers: ${totalCustomers} &nbsp;&nbsp;&nbsp;&nbsp; 
+		Total Orders: ${totalOrders} &nbsp;&nbsp;&nbsp;&nbsp;
+		
 		<hr width="60%">
 	</div>
 </body>

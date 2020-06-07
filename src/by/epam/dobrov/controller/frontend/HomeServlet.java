@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import by.epam.dobrov.dao.impl.BookDAOImpl;
 import by.epam.dobrov.dao.impl.CategoryDAOImpl;
+import by.epam.dobrov.entity.Book;
 import by.epam.dobrov.entity.Category;
 
 @WebServlet("") // оставляем пустым,чтобы указать что сервлет будет обрабатывать запросы юзеров
@@ -20,7 +22,8 @@ public class HomeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/*
-	 * этот сервлет вызывается когда мы получаем доступ к странице фронтэнд
+	 * этот сервлет вызывается когда мы получаем доступ к странице фронтэнд хом пейдж 
+	 *  и тут  же вызываем  метод который реализовывает  бест селлинг букс
 	 */
 	public HomeServlet() {
 		super();
@@ -29,6 +32,12 @@ public class HomeServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
+		BookDAOImpl bookDAOImpl = new BookDAOImpl();
+		
+		List<Book> listBestSellignBooks = bookDAOImpl.listBestSellingBooks();
+		
+		request.setAttribute("listBestSellignBooks", listBestSellignBooks);
 
 		String homepage = "frontend/index.jsp";
 		RequestDispatcher dispatcher = request.getRequestDispatcher(homepage);

@@ -7,6 +7,8 @@
 <meta charset="ISO-8859-1">
 <title>Cart</title>
 <link rel="stylesheet" href="css/style.css">
+<script type="text/javascript" src="js/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" src="js/jquery.validate.min.js"></script>
 </head>
 <body>
 
@@ -30,8 +32,9 @@
 		</c:if>
 
 		<c:if test="${cart.totalItems > 0 }">
-			<div>
-				<form>
+
+			<form action="update_cart" method="post" id="cartForm">
+				<div>
 					<table border="1" cellpadding="7">
 						<tr>
 							<th>No</th>
@@ -39,9 +42,6 @@
 							<th>Quantity</th>
 							<th>Price</th>
 							<th>Subtotal</th>
-
-							<th><a href=""><b>Clear Cart</b></a></th>
-
 						</tr>
 
 						<c:forEach items="${cart.items}" var="item" varStatus="status">
@@ -51,30 +51,74 @@
 									src="data:image/jpg;base64,${item.key.base64Image }" width="84"
 									height="110" /></td>
 								<td>${item.key.title }</td>
-								<td>${item.value }</td>
+								<td>
+								<input type ="hidden" name="bookId" value="${item.key.bookId}"/> <!-- для каждой книги чтоб увеличить ее кол-во мы имеем ИД и кол-во, в данном случае ключ:значение -->
+								<input type="text" name="quantity${status.index + 1}"
+									value="${item.value }" size="5" /></td>
+								<!-- для редактирования кол-ва книг -->
 								<td><fmt:formatNumber value="${item.key.price }"
 										type="currency" /></td>
 								<td><fmt:formatNumber
 										value="${item.value * item.key.price}" type="currency" /></td>
-								<td ><a href="delete_from_cart?book_id=${item.key.bookId}">Delete</a></td>
+								<td><a href="delete_from_cart?book_id=${item.key.bookId}">Delete</a></td>
 							</tr>
 						</c:forEach>
-						<tr>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td>Total:</td>
-							<td colspan="2"><fmt:formatNumber
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td>Total:</td>
+								<td colspan="2"><fmt:formatNumber
 									value="${cart.totalAmount }" type="currency" /></td>
-						</tr>
-
+							</tr>
 					</table>
-				</form>
-
-			</div>
+				</div>
+				<div>
+					<table>
+						<tr>
+						&nbsp;&nbsp;&nbsp;
+							<td></td>
+							<td><button type="submit">Update</button></td>
+							<td><a href="${pageContext.request.contextPath}/">Continue
+									shopping</a></td>
+							<!--  идет перенаправление на главную страницу -->
+							<td><a href="checkout">Checkout</a></td>
+						</tr>
+					</table>
+				</div>
+			</form>
 		</c:if>
 	</div>
-
+&nbsp;&nbsp;&nbsp;
 	<jsp:directive.include file="footer.jsp" />
+
+	<script type="text/javascript">
+	
+	// проверка на то что  кол-во  было не ноль и то что оно является числом а не буквой или тп, а так же мин число  должно быть 1
+	$(document).ready(function(){
+		$("#cartForm").validate({
+			rules: {
+				<c:forEach items="${cart.items}" var="item" varStatus="status">
+				quantity${status.index + 1}: {
+					required: true,
+					number: true,
+					min: 1
+					},
+				</c:forEach>
+			},
+			messages:{
+				<c:forEach items="${cart.items}" var="item" varStatus="status">
+				quantity${status.index + 1}: {
+					required: "Please enter the quantity",
+					number: "Quantity must be a number" ,
+					min: "Quantity must be greater than 0"
+					},
+				</c:forEach>
+			}
+			
+		});
+	});
+	
+	</script>
 </body>
 </html>

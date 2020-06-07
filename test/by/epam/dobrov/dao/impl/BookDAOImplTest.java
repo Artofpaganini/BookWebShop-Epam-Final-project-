@@ -217,8 +217,17 @@ public class BookDAOImplTest extends BaseDAOTest {
 		
 		assertEquals(1, listBooks.size());
 		
-
+	}
+	
+	@Test
+	public void test_ShouldShowListBestSellingBooks() {
+		List<Book> topBestSellingBooks = bookDAOImpl.listBestSellingBooks();
 		
+		for (Book book : topBestSellingBooks) {
+			System.out.println(book.getTitle());
+		}
+		
+		assertEquals(4, topBestSellingBooks.size());
 	}
 
 }

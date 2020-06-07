@@ -13,7 +13,7 @@
 	<div align="center" style="width: 80%; margin: 0 auto">
 		<!-- style="width:80% указали ширину строк,т.е сколько картинок сможет поместиться в 1 полосе -->
 		<h2>Best-Seller Books</h2>
-		<c:forEach items="${listBestBooks }" var="book">
+		<c:forEach items="${listBestSellignBooks}" var="book"> <!--  имя коллекции соед и код и страницу -->
 			<!-- вывод книг и их данных на экран согласно их категориям -->
 			<div style="display: inline-block; margin: 20px">
 				<!--  float: left  говорит что написано все слева направо-->
@@ -42,7 +42,6 @@
 	</div>
 
 
-	</div>
 
 	<jsp:directive.include file="footer.jsp" />
 </body>
