@@ -13,14 +13,17 @@
 	<jsp:directive.include file="header.jsp" />
 
 	<div align="center" style="width: 80%; margin: 0 auto">
+
 		<c:if test="${fn:length(result)==0}">
-			<!-- если результат  длины  ответа == 0 то нет результатов, если нет  то выводим список получившихся результатов -->
 			<h2>No Books Results for "${keyword}"</h2>
 		</c:if>
 
 		<c:if test="${fn:length(result)> 0}">
+
 			<div align="center" style="width: 80%; margin: 0 auto">
+
 				<h2>Search Results for "${keyword}":</h2>
+
 				<c:forEach items="${result }" var="book">
 
 					<div style="display: inline-block; margin: 20px">
@@ -31,6 +34,7 @@
 								height="164" />
 							</a>
 						</div>
+
 						<div>
 							<a href="view_book?id=${book.bookId}"> <b>${book.title}</b>
 							</a>
@@ -45,7 +49,9 @@
 					</div>
 
 				</c:forEach>
+
 			</div>
+
 		</c:if>
 
 	</div>

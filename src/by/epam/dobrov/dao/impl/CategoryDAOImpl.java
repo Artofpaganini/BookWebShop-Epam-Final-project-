@@ -2,17 +2,22 @@ package by.epam.dobrov.dao.impl;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-
 import by.epam.dobrov.dao.GenericDAO;
 import by.epam.dobrov.dao.JpaDAO;
 import by.epam.dobrov.entity.Category;
-import by.epam.dobrov.entity.Users;
 
+/**
+ * 9. Система Интернет-магазин. Администратор осуществляет ведение каталога
+ * Товаров. Клиент делает и оплачивает Заказ на Товары. Администратор может
+ * занести неплательщиков в “черный список”.
+ * 
+ * @author Viktor
+ *
+ */
 public class CategoryDAOImpl extends JpaDAO<Category> implements GenericDAO<Category> {
 
 	public CategoryDAOImpl() {
-		
+
 	}
 
 	@Override
@@ -51,8 +56,7 @@ public class CategoryDAOImpl extends JpaDAO<Category> implements GenericDAO<Cate
 		return count;
 	}
 
-	public Category findByName(String categoryName) { // просмотреть работу этого метода снова
-
+	public Category findByName(String categoryName) { 
 		List<Category> listCategories = super.findByNamedQuery("Category.findByName", "name", categoryName);
 
 		if (listCategories != null && listCategories.size() > 0) {

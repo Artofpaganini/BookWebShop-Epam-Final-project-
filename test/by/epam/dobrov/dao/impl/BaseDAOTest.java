@@ -11,7 +11,7 @@ public class BaseDAOTest {
 	
 	
 	public static void setUpClass() {
-		// EntityManagerFactory создает EntityManager а он уже добавляет объект в бд
+
 		entityManagerFactory = Persistence.createEntityManagerFactory("book_shop");
 		entityManager = entityManagerFactory.createEntityManager();
 

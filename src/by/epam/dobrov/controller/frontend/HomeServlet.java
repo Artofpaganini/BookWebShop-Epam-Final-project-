@@ -12,19 +12,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import by.epam.dobrov.dao.impl.BookDAOImpl;
-import by.epam.dobrov.dao.impl.CategoryDAOImpl;
 import by.epam.dobrov.entity.Book;
-import by.epam.dobrov.entity.Category;
 
-@WebServlet("") // оставляем пустым,чтобы указать что сервлет будет обрабатывать запросы юзеров
-				// на дом стр
+
+/**
+ * 9. Система Интернет-магазин. Администратор осуществляет ведение каталога
+ * Товаров. Клиент делает и оплачивает Заказ на Товары. Администратор может
+ * занести неплательщиков в “черный список”.
+ * 
+ * @author Viktor
+ *
+ */
+@WebServlet("")
 public class HomeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	/*
-	 * этот сервлет вызывается когда мы получаем доступ к странице фронтэнд хом пейдж 
-	 *  и тут  же вызываем  метод который реализовывает  бест селлинг букс
-	 */
 	public HomeServlet() {
 		super();
 
@@ -32,11 +34,11 @@ public class HomeServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
+
 		BookDAOImpl bookDAOImpl = new BookDAOImpl();
-		
+
 		List<Book> listBestSellignBooks = bookDAOImpl.listBestSellingBooks();
-		
+
 		request.setAttribute("listBestSellignBooks", listBestSellignBooks);
 
 		String homepage = "frontend/index.jsp";

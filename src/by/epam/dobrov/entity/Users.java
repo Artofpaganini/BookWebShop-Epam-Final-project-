@@ -11,7 +11,14 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-//РїР°СЂР°РјРµС‚СЂ РїРѕ РєРѕС‚РѕСЂРѕРјСѓ Р±СѓРґРµС‚ РёСЃРєР°С‚СЊ С‚СѓС‚ СЂР°Р±РѕС‚Р°РµС‚ С‡РµСЂРµР· : Рё РёРјСЏ РїР°СЂР°РјРµС‚СЂР°
+/**
+ * 9. Система Интернет-магазин. Администратор осуществляет ведение каталога
+ * Товаров. Клиент делает и оплачивает Заказ на Товары. Администратор может
+ * занести неплательщиков в “черный список”.
+ * 
+ * @author Viktor
+ *
+ */
 @Entity
 @Table(name = "users", catalog = "book_shop", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 @NamedQueries({ @NamedQuery(name = "Users.findAll", query = "Select u from Users u order by u.fullName"),
@@ -20,10 +27,10 @@ import javax.persistence.UniqueConstraint;
 		@NamedQuery(name = "Users.checkLogin", query = "Select u from Users u where u.email =:email and u.password =:password") })
 public class Users implements java.io.Serializable {
 
-	           private Integer usersId;
+	private Integer usersId;
 
 	private String email;
-	    private String password;
+	private String password;
 	private String fullName;
 
 	public Users() {

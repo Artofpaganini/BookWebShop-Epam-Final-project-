@@ -2,18 +2,22 @@ package by.epam.dobrov.dao.impl;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
 import by.epam.dobrov.dao.GenericDAO;
 import by.epam.dobrov.dao.JpaDAO;
 import by.epam.dobrov.entity.Book;
-import by.epam.dobrov.entity.Users;
 
+/**
+ * 9. Система Интернет-магазин. Администратор осуществляет ведение каталога
+ * Товаров. Клиент делает и оплачивает Заказ на Товары. Администратор может
+ * занести неплательщиков в “черный список”.
+ * 
+ * @author Viktor
+ *
+ */
 public class BookDAOImpl extends JpaDAO<Book> implements GenericDAO<Book> {
 
-	
-
 	public BookDAOImpl() {
-		
+
 	}
 
 	@Override
@@ -73,11 +77,11 @@ public class BookDAOImpl extends JpaDAO<Book> implements GenericDAO<Book> {
 
 		return super.findByNamedQuery("Book.searchBook", "keyword", keyword);
 	}
-	
-	public List<Book> listBestSellingBooks () {
-		
+
+	public List<Book> listBestSellingBooks() {
+
 		return super.findByNamedQuery("OrderDetail.bestSelling", 0, 4);
-		
+
 	}
 
 }

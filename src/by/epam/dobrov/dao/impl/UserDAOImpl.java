@@ -4,30 +4,36 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.EntityManager;
-
-import by.epam.dobrov.controller.admin.user.ListUsersServlet;
 import by.epam.dobrov.dao.GenericDAO;
 import by.epam.dobrov.dao.JpaDAO;
 import by.epam.dobrov.dao.impl.generator.HashGenerator;
 import by.epam.dobrov.entity.Users;
 
+/**
+ * 9. Система Интернет-магазин. Администратор осуществляет ведение каталога
+ * Товаров. Клиент делает и оплачивает Заказ на Товары. Администратор может
+ * занести неплательщиков в “черный список”.
+ * 
+ * @author Viktor
+ *
+ */
 public class UserDAOImpl extends JpaDAO<Users> implements GenericDAO<Users> {
 
-	public UserDAOImpl() {// С‚СѓС‚ РІС‹Р·С‹РІР°РµРј Р•Рњ РёР· JPADAO
+	public UserDAOImpl() {
 
 	}
 
 	@Override
 	public Users create(Users user) {
 		/*
-		 * РїСЂРё СЃРѕР·РґР°РЅРёРё РјС‹ РїРµСЂРµРґР°РµРј РїР°СЃСЃ generateSHA256, РіРґРµ РїР°СЂРѕР»СЊ РїРµСЂРµРґР°РµС‚СЃСЏ РІ
-		 * hashstring Рё С‚Р°Рј РєРѕРЅРІРµСЂС‚РёСЂСѓРµС‚СЃСЏ СЃ РїРѕРјРѕС‰СЊСЋ Р±Р°Р№С‚РѕРІ РІ 16-СЂРёС‡РЅСѓСЋ СЃРёСЃС‚РµРјСѓ Рё
-		 * РІРѕР·РІСЂР°С‰Р°РµС‚СЃСЏ Рё РїСЂРёСЃРІР°РёРµС‚СЃСЏ С‚СѓС‚ РІ encryptedPassword, РїРѕСЃР»Рµ С‡РµРіРѕ
-		 * encryptedPassword СѓСЃС‚Р°РЅР°РІР»РёРІР°РµС‚СЃСЏ РєР°Рє РїР°СЂРѕР»СЊ РґР»СЏ СЋР·РµСЂР°
+		 * при создании мы передаем пасс generateSHA256, где пароль передается в
+		 * hashstring и там конвертируется с помощью байтов в 16-ричную систему и
+		 * возвращается и присваиется тут в encryptedPassword, после чего
+		 * encryptedPassword устанавливается как пароль для юзера
 		 */
 		String encryptedPassword = HashGenerator.generateSHA256(user.getPassword());
 		user.setPassword(encryptedPassword);
+		
 		return super.create(user);
 	}
 
@@ -45,10 +51,11 @@ public class UserDAOImpl extends JpaDAO<Users> implements GenericDAO<Users> {
 	public Users findByEmail(String email) {
 
 		/*
-		 * РїРѕРёСЃРє РёС‰РµС‚ РєРѕРЅРєСЂРµС‚РЅС‹Р№ РёРјРµР№Р» РІ Р±Рґ , РµСЃР»Рё РЅР°С…РѕРґРёС‚ С‚Рѕ Р·Р°РєРёРґС‹РІР°РµС‚ РІ СЌС‚РѕС‚
-		 * Р»РёСЃС‚(СЂР°Р±РѕС‚Р°РµС‚ РґР°Р¶Рµ РµСЃР»Рё РІ Р±Рґ 2 РѕРґРёРЅР°РєРѕРІС‹С… РјС‹Р»Р°), РµСЃР»Рё РЅРµ РЅР°С…РѕРґРёС‚ С‚Рѕ Р»РёСЃС‚
-		 * Р±СѓРґРµС‚ null
+		 * поиск ищет конкретный имейл в бд , если находит то закидывает в этот
+		 * лист(работает даже если в бд 2 одинаковых мыла), если не находит то лист
+		 * будет null
 		 */
+
 
 		List<Users> usersList = super.findByNamedQuery("Users.findByEmail", "email", email);
 
@@ -82,7 +89,6 @@ public class UserDAOImpl extends JpaDAO<Users> implements GenericDAO<Users> {
 		super.delete(Users.class, userId);
 	}
 
-	
 	@Override
 	public List<Users> listAll() {
 		return super.findByNamedQuery("Users.findAll");

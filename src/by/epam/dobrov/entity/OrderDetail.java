@@ -13,15 +13,18 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+/**
+ * 9. Система Интернет-магазин. Администратор осуществляет ведение каталога
+ * Товаров. Клиент делает и оплачивает Заказ на Товары. Администратор может
+ * занести неплательщиков в “черный список”.
+ * 
+ * @author Viktor
+ *
+ */
 @Entity
 @Table(name = "order_detail", catalog = "book_shop")
 @NamedQueries({
-	@NamedQuery (name = "OrderDetail.bestSelling",
-			query = "Select od.book from OrderDetail od group by od.book.bookId order by sum(od.quantity) desc")
-	/*
-	 * вырбрать все ИД и сумму кол-в из ордер дител групируя  по ИД и сортируя по сумме кол-в
-	 */
-})
+		@NamedQuery(name = "OrderDetail.bestSelling", query = "Select od.book from OrderDetail od group by od.book.bookId order by sum(od.quantity) desc") })
 
 public class OrderDetail implements java.io.Serializable {
 

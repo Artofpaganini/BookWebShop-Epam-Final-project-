@@ -4,17 +4,11 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import by.epam.dobrov.entity.Category;
-import by.epam.dobrov.entity.Users;
-import junit.framework.Assert;
 
 public class CategoryDAOImplTest extends BaseDAOTest {
 
@@ -103,7 +97,7 @@ public class CategoryDAOImplTest extends BaseDAOTest {
 
 		assertNotNull(category);
 	}
-	
+
 	@Test
 	public void test_ShouldNotFindByName() {
 

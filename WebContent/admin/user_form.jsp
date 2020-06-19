@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%><!--  тег создания циклов, определения условий, вывода информации на страницу,альтернатива скриплетам . -->
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -38,7 +38,6 @@
 				<td>Email:</td>
 				<td><input type="text" id="email" name="email" size="20"
 					value="${user.email}" /></td>
-				<!-- value="${user.email} выводит на экран данные юзера которого мы будем edit -->
 			</tr>
 			<tr>
 				<td>Full Name:</td>
@@ -57,8 +56,7 @@
 			<tr>
 				<td colspan="2" align="center"><input type="submit"
 					value="Save"> <input type="button" value="Cancel"
-					onclick="javascript:history.go(-1);"> <!--  onclick  вернет на предыдущую страницу -->
-				</td>
+					onclick="javascript:history.go(-1);"></td>
 			</tr>
 
 		</table>
@@ -68,19 +66,18 @@
 
 
 <script type="text/javascript">
-	// скрипт для проверки заполнения полей , если поле не заполнено то скрипт работает
 
 	$(document).ready(function() {
 		$("#userForm").validate({
 			rules : {
 				email : {
-					required : true, //если идет запрос, что нужно заполнить поле, то будет выводится сообщение которое внизу в мессагес
+					required : true, 
 					email : true
 				},
 
 				fullname : "required",
 				
-				<c:if test="${user == null}"> // если юзер = нулл то будет запрашиваться введиние пароля пароль
+				<c:if test="${user == null}"> 
 				password: "required"
 				</c:if>
 
@@ -88,7 +85,7 @@
 
 			messages : {
 				email : {
-					required : "Please enter email", // если поле пусто то будет эта надпись а если заполнено, но не имейл а мусор , то надпись ниже
+					required : "Please enter email",
 					email : "Please enter an valid email "
 				},
 

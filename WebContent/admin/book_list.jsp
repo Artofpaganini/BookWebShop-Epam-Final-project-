@@ -3,11 +3,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>Books Management</title>
-<link rel="stylesheet" href="../css/style.css">
-<script type="text/javascript" src=../js/jquery-3.5.1.min.js></script>
-<script type="text/javascript" src=../js/jquery.validate.min.js></script>
+	<meta charset="ISO-8859-1">
+	<title>Books Management</title>
+	<link rel="stylesheet" href="../css/style.css">
+	<script type="text/javascript" src=../js/jquery-3.5.1.min.js></script>
+	<script type="text/javascript" src=../js/jquery.validate.min.js></script>
 </head>
 <body>
 	<jsp:directive.include file="header.jsp" />
@@ -20,7 +20,6 @@
 	</div>
 
 	<c:if test="${message !=null }">
-		<!--  для вывода  предупреждающего сообщения над списком  книг -->
 		<div align="center">
 			<h4 class="message">${message}</h4>
 		</div>
@@ -43,7 +42,7 @@
 					<td>${status.index+1}</td>
 					<td>${book.bookId}</td>
 					<td><img src="data:image/jpg;base64,${book.base64Image }"
-						width="84" height="110" /> <!-- base64  формат кодирования, преобразовывает картинку в строкове представление  -->
+						width="84" height="110" /> 
 					</td>
 
 					<td>${book.title}</td>

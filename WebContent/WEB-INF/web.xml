@@ -15,8 +15,7 @@
 
 	<error-page>
 		<error-code>404</error-code>
-		<location>/error/404.jsp</location> <!-- направление ошибки 404 , если юзер получит ошибку 404 то вместо непонятных 
-			вещей он увидит сообщение , которые я введу -->
+		<location>/error/404.jsp</location>
 	</error-page>
 	
 	<error-page>

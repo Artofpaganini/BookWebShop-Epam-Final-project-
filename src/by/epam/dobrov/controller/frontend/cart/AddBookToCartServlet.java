@@ -10,6 +10,14 @@ import javax.servlet.http.HttpServletResponse;
 import by.epam.dobrov.dao.impl.BookDAOImpl;
 import by.epam.dobrov.entity.Book;
 
+/**
+ * 9. Система Интернет-магазин. Администратор осуществляет ведение каталога
+ * Товаров. Клиент делает и оплачивает Заказ на Товары. Администратор может
+ * занести неплательщиков в “черный список”.
+ * 
+ * @author Viktor
+ *
+ */
 @WebServlet("/add_to_cart")
 public class AddBookToCartServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -18,10 +26,6 @@ public class AddBookToCartServlet extends HttpServlet {
 		super();
 
 	}
-	/*
-	 * сервлет реализует кнопку добавить в корзину
-	 * 
-	 */
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -31,23 +35,24 @@ public class AddBookToCartServlet extends HttpServlet {
 		Object cartObject = request.getSession().getAttribute("cart");
 
 		Cart cart = null;
-		
+
 		if (cartObject != null && cartObject instanceof Cart) {
 			cart = (Cart) cartObject;
-			
+
 		} else {
+			
 			cart = new Cart();
 			request.getSession().setAttribute("cart", cart);
 		}
-		
+
 		BookDAOImpl bookDAOImpl = new BookDAOImpl();
-	
+
 		Book book = bookDAOImpl.get(bookId);
-		
+
 		cart.addItem(book);
-		
+
 		String cartPage = request.getContextPath().concat("/view_cart");
-		
+
 		response.sendRedirect(cartPage);
 	}
 

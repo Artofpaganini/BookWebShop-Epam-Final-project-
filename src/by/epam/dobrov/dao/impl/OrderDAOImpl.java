@@ -9,15 +9,23 @@ import by.epam.dobrov.dao.GenericDAO;
 import by.epam.dobrov.dao.JpaDAO;
 import by.epam.dobrov.entity.BookOrder;
 
-
+/**
+ * 9. Система Интернет-магазин. Администратор осуществляет ведение каталога
+ * Товаров. Клиент делает и оплачивает Заказ на Товары. Администратор может
+ * занести неплательщиков в “черный список”.
+ * 
+ * @author Viktor
+ *
+ */
 public class OrderDAOImpl extends JpaDAO<BookOrder> implements GenericDAO<BookOrder> {
 
 	@Override
 	public BookOrder create(BookOrder bookOrder) {
 
-		bookOrder.setOrderDate(new Date()); // для установки времени создания заказа
+		bookOrder.setOrderDate(new Date()); 
 
 		bookOrder.setOrderStatus("Processing");
+		
 		return super.create(bookOrder);
 	}
 
@@ -44,9 +52,9 @@ public class OrderDAOImpl extends JpaDAO<BookOrder> implements GenericDAO<BookOr
 		parameters.put("customerId", customerId);
 
 		List<BookOrder> result = super.findByNamedQuery("BookOrder.findByIdAndCustomer", parameters);
-		if(!result.isEmpty()) {
+		if (!result.isEmpty()) {
 			return result.get(0);
-			
+
 		}
 		return null;
 	}
@@ -75,9 +83,5 @@ public class OrderDAOImpl extends JpaDAO<BookOrder> implements GenericDAO<BookOr
 		return super.findByNamedQuery("BookOrder.findByCustomer", "customerId", customerId);
 
 	}
-	
-
-	
-	
 
 }

@@ -11,7 +11,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class CreateCategoryServlet
+ * 9. Система Интернет-магазин. Администратор осуществляет ведение каталога
+ * Товаров. Клиент делает и оплачивает Заказ на Товары. Администратор может
+ * занести неплательщиков в “черный список”.
+ * 
+ * @author Viktor
+ *
  */
 @WebServlet("/admin/create_category")
 public class CreateCategoryServlet extends HttpServlet {
@@ -24,7 +29,6 @@ public class CreateCategoryServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		CategoryServices categoryServices = new CategoryServices(request, response);
-
 		categoryServices.createCategory();
 	}
 

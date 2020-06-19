@@ -1,6 +1,7 @@
 package by.epam.dobrov.service;
 
 import java.io.IOException;
+
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -13,9 +14,17 @@ import org.slf4j.LoggerFactory;
 
 import by.epam.dobrov.dao.impl.CustomerDAOImpl;
 import by.epam.dobrov.dao.impl.generator.HashGenerator;
-import by.epam.dobrov.entity.Customer;
-import javassist.bytecode.analysis.ControlFlow.Block;
 
+import by.epam.dobrov.entity.Customer;
+
+/**
+ * 9. —истема »нтернет-магазин. јдминистратор осуществл€ет ведение каталога
+ * “оваров.  лиент делает и оплачивает «аказ на “овары. јдминистратор может
+ * занести неплательщиков в Учерный списокФ.
+ * 
+ * @author Viktor
+ *
+ */
 public class CustomerServices {
 
 	private final static Logger LOGGER = LoggerFactory.getLogger(CustomerServices.class);
@@ -31,29 +40,13 @@ public class CustomerServices {
 		customerDAOImpl = new CustomerDAOImpl();
 	}
 
-	public void listCustomer() throws ServletException, IOException {
-		listCustomer(null);
-	}
-
-	public void listCustomer(String message) throws ServletException, IOException {
-
-		LOGGER.info("Got list of the customer from DB");
-
-		List<Customer> listCustomer = customerDAOImpl.listAll();
-
-		if (message != null) { // проверка на наличие сообщени€ , если оно не налл то выводим его
-			request.setAttribute("message", message);
-		}
-
-		request.setAttribute("listCustomer", listCustomer);
-
-		String listCustomerPage = "customer_list.jsp";
-		RequestDispatcher requestDispatcher = request.getRequestDispatcher(listCustomerPage);
-		requestDispatcher.forward(request, response);
-	}
-
-	private void updateCustomerFieldsFromForm(Customer customer) { // метод с общими данными и присвоением их вход€щему
-																	// покупателю
+	/**
+	 * Method update all customer fields , by parameters which inputed Method for
+	 * the reducing the code
+	 * 
+	 * @param customer
+	 */
+	private void updateCustomerFieldsFromForm(Customer customer) {
 
 		String email = request.getParameter("email");
 		String fullName = request.getParameter("fullName");
@@ -67,7 +60,7 @@ public class CustomerServices {
 		if (email != null && !(email.equals(""))) {
 			customer.setEmail(email);
 		}
-		
+
 		customer.setFullName(fullName);
 
 		if (password != null & !password.isEmpty()) {
@@ -83,9 +76,46 @@ public class CustomerServices {
 
 	}
 
+	public void listCustomer() throws ServletException, IOException {
+		listCustomer(null);
+	}
+
+	/**
+	 * Method displays a list of customer on the screen, with an additional message
+	 * if necessary
+	 * 
+	 * @param message
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	public void listCustomer(String message) throws ServletException, IOException {
+
+		LOGGER.info("Get list of the customer from DB");
+
+		List<Customer> listCustomer = customerDAOImpl.listAll();
+
+		if (message != null) {
+			request.setAttribute("message", message);
+		}
+
+		request.setAttribute("listCustomer", listCustomer);
+
+		String listCustomerPage = "customer_list.jsp";
+		
+		RequestDispatcher requestDispatcher = request.getRequestDispatcher(listCustomerPage);
+		requestDispatcher.forward(request, response);
+	}
+
+	/**
+	 * Method create the customer by email, and show error message if this email
+	 * exist
+	 * 
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	public void createCustomer() throws ServletException, IOException {
 		LOGGER.info("Create new Customer");
-		
+
 		String email = request.getParameter("email");
 
 		Customer expectedCustomer = customerDAOImpl.findByEmail(email);
@@ -93,7 +123,7 @@ public class CustomerServices {
 		String message = null;
 
 		if (expectedCustomer != null) {
-			
+
 			message = "The customer with email: " + email + " is already exist!";
 
 			listCustomer(message);
@@ -117,6 +147,13 @@ public class CustomerServices {
 
 	}
 
+	/**
+	 * Method realized the function register form, customer eneter his information
+	 * and if everything is fine , register will be successful
+	 * 
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	public void registerCustomer() throws ServletException, IOException {
 		LOGGER.info("Customer Registration");
 
@@ -132,6 +169,7 @@ public class CustomerServices {
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher(messagePage);
 			request.setAttribute("message", message);
 			requestDispatcher.forward(request, response);
+
 			LOGGER.warn("The customer with email:{} is already exist!", email);
 		} else {
 
@@ -140,14 +178,12 @@ public class CustomerServices {
 			updateCustomerFieldsFromForm(customer);
 			customerDAOImpl.create(customer);
 
-			String message = "The registration has been completed!<br/>" + "<a href='login'>Click here</a> to login";
-			/*
-			 * тут не выводим список пользователей, а выводим просто это сообщение
-			 */
-
+			String message = "The registration has been completed!<br/>" + "<a href='login'>Click here</a> to login"; 
+		
 			String messagePage = "/frontend/message.jsp";
-			
+
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher(messagePage);
+
 			request.setAttribute("message", message);
 			requestDispatcher.forward(request, response);
 
@@ -157,6 +193,13 @@ public class CustomerServices {
 
 	}
 
+	/**
+	 * *Method check customer id , and if customer exist, we get a form for edit,
+	 * and make a password null by visual
+	 * 
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	public void editCustomer() throws ServletException, IOException {
 
 		LOGGER.info("Edit some information about the customer ");
@@ -185,6 +228,13 @@ public class CustomerServices {
 		LOGGER.info("Edit customer has been successfully ");
 	}
 
+	/**
+	 * Method realized update of info about the customer, if email existed - get
+	 * error message else change form
+	 * 
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	public void updateCustomer() throws ServletException, IOException {
 
 		LOGGER.info("Update some information about the customer");
@@ -196,10 +246,13 @@ public class CustomerServices {
 		String message = null;
 
 		Customer customerByEmail = customerDAOImpl.findByEmail(email);
-
-		if (customerByEmail != null && customerByEmail.getCustomerId() != customerId) {
+		Customer customerById = customerDAOImpl.get(customerId);
+		
+		if (customerByEmail != null && customerByEmail.getCustomerId() != customerById.getCustomerId()) {
 			message = "Email: " + email + " is already exist";
+			
 			listCustomer(message);
+			
 			LOGGER.warn("Got warning, Customer  with email {} is already exist!!!", email);
 
 		} else {
@@ -222,6 +275,12 @@ public class CustomerServices {
 
 	}
 
+	/**
+	 * Method deleted customer by id
+	 * 
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	public void deleteCustomer() throws ServletException, IOException {
 
 		LOGGER.info("Try to delete customer ");
@@ -236,31 +295,46 @@ public class CustomerServices {
 
 		LOGGER.info("The customer with ID {} has been deleted", customerId);
 	}
-	
 
+	/**
+	 * Method redirect on login page if push sign in
+	 * 
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	public void showLogin() throws ServletException, IOException {
-		/*
-		 * метод дл€ перенаправлени€ на страницу логин, при нажатии sign in
-		 */
+
 		String loginForm = "frontend/login.jsp";
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(loginForm);
 		requestDispatcher.forward(request, response);
 
 	}
 
+	/**
+	 * Method redirect from login page on customer page, if customer logged
+	 * 
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	public void showCustomerProfile() throws ServletException, IOException {
-		/*
-		 * метод дл€ перенаправлени€ на страницу логин, при нажатии sign in
-		 */
+
 		String loginForm = "frontend/customer_profile.jsp";
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(loginForm);
 		requestDispatcher.forward(request, response);
 
 	}
 
+	/**
+	 * Method realized enter in customer page if access is opened, else - errors
+	 * block or failed access , if access is opened we create a new session for
+	 * customer
+	 * 
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	public void doLogin() throws ServletException, IOException {
 
-		LOGGER.info("User is  trying to get the login access ");
+		LOGGER.info("Customer is  trying to get the login access ");
 
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
@@ -284,9 +358,6 @@ public class CustomerServices {
 			LOGGER.warn("Access blocked, for the information please contact administrator!");
 
 		} else {
-			/*
-			 * гет сессион - мы открываем сессию дл€ конткретного покупател€
-			 */
 
 			request.getSession().setAttribute("loggedCustomer", customer);
 			showCustomerProfile();
@@ -296,34 +367,36 @@ public class CustomerServices {
 
 	}
 
+	/**
+	 * Method redirect from customer page on edit customer page
+	 * 
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	public void showCustomerProfileEditForm() throws ServletException, IOException {
-		/*
-		 * метод переводит на страницу редактировани€ профил€ при нажатии edit profile
-		 */
+		
 		String editPage = "frontend/edit_profile.jsp";
+		
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(editPage);
 		requestDispatcher.forward(request, response);
 
 	}
 
+	/**
+	 * Method updates the edited information, to update the customer information
+	 * at first we need to extract the buyer object from the session in our case it is
+	 * loggedCustomer
+	 * 
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	public void updateCustomerProfile() throws ServletException, IOException {
-		/*
-		 * метод обновл€ет отредактированную информацию чтобы обновить инфу о покупателе
-		 * сначала нам нужно извлечь обект покупатель из сессии в нашем случае это
-		 * loggedCustomer
-		 */
 
 		Customer customer = (Customer) request.getSession().getAttribute("loggedCustomer");
-		/*
-		 * после извлечени€ мы получаем все значени€ которые были в ред форме
-		 */
+	
 		updateCustomerFieldsFromForm(customer);
 
 		customerDAOImpl.update(customer);
-
-		/*
-		 * после апдейта перед на страницу пользовател€ customer profile
-		 */
 
 		showCustomerProfile();
 	}

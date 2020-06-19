@@ -17,12 +17,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import by.epam.dobrov.controller.frontend.cart.Cart;
+import by.epam.dobrov.dao.impl.CustomerDAOImpl;
 import by.epam.dobrov.dao.impl.OrderDAOImpl;
+
 import by.epam.dobrov.entity.Book;
 import by.epam.dobrov.entity.BookOrder;
 import by.epam.dobrov.entity.Customer;
 import by.epam.dobrov.entity.OrderDetail;
 
+/**
+ * 9. Система Интернет-магазин. Администратор осуществляет ведение каталога
+ * Товаров. Клиент делает и оплачивает Заказ на Товары. Администратор может
+ * занести неплательщиков в “черный список”.
+ * 
+ * @author Viktor
+ *
+ */
 public class OrderServices {
 	private final static Logger LOGGER = LoggerFactory.getLogger(OrderServices.class);
 
@@ -42,11 +52,16 @@ public class OrderServices {
 		listAllOrder(null);
 	}
 
+	/**
+	 * Method displays order list on the screen, with an additional message if
+	 * necessary
+	 * 
+	 * @param message
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	public void listAllOrder(String message) throws ServletException, IOException {
-		/*
-		 * в этом методе получаем список всех заказов, и перенаправляем его на страницу
-		 * заказов
-		 */
+		LOGGER.info("Trying to get order list from DB");
 
 		List<BookOrder> listOrder = orderDAOImpl.listAll();
 
@@ -65,10 +80,14 @@ public class OrderServices {
 
 	}
 
+	/**
+	 * Method gets order id , and get all details by this id, for the admin
+	 * 
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	public void viewOrderDetailForAdmin() throws ServletException, IOException {
-		/*
-		 * этот метод показывает детали о заказе
-		 */
+		LOGGER.info("Trying to get details  about order ");
 
 		Integer orderId = Integer.parseInt(request.getParameter("id"));
 
@@ -83,11 +102,15 @@ public class OrderServices {
 		requestDispatcher.forward(request, response);
 	}
 
+	/**
+	 * Method redirected from cart to place order, by button - checkout
+	 * 
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	public void showCheckoutForm() throws ServletException, IOException {
+		LOGGER.info("Entered button checkout");
 
-		/*
-		 * этот метод делает перенаправление , когда нажимаем кнопку checkout
-		 */
 		String checkOutPage = "frontend/checkout.jsp";
 
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(checkOutPage);
@@ -96,11 +119,15 @@ public class OrderServices {
 
 	}
 
+	/**
+	 * Method places an order, according to the entered information, first we must
+	 * get all the entered info into the method, first all the data about the buyer
+	 * 
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	public void placeOrder() throws ServletException, IOException {
-		/*
-		 * метод оформляет заказ, согласно вписанной информации, сначала мы должны
-		 * получить в метод всю вписанную инфу, сначала все данные о покупателе
-		 */
+		LOGGER.info("Started to place order");
 
 		String recipientName = request.getParameter("recipientName");
 		String recipientPhone = request.getParameter("recipientPhone");
@@ -109,15 +136,8 @@ public class OrderServices {
 		String zipCode = request.getParameter("zipCode");
 		String country = request.getParameter("country");
 		String paymentMethod = request.getParameter("paymentMethod");
-
-		/*
-		 * теперь считываем все данные заказе
-		 */
-
+	
 		BookOrder order = new BookOrder();
-		/*
-		 * устанавливаем в данные о заказе все данные о юзере
-		 */
 
 		String shippingAddress = address + ", " + city + ", " + zipCode + ", " + country;
 
@@ -126,33 +146,13 @@ public class OrderServices {
 		order.setShippingAddress(shippingAddress);
 		order.setPaymentMethod(paymentMethod);
 
-		/*
-		 * Создаем сессию, для покупателя и получаем экземпляр связанный с определённым
-		 * именем в данной сессии.
-		 */
-
 		HttpSession session = request.getSession();
 		Customer customer = (Customer) session.getAttribute("loggedCustomer");
 
-		/*
-		 * присваиваем этого покупателя в заказ
-		 */
 		order.setCustomer(customer);
-
-		/*
-		 * теперь возвращаем мапу , где ключ-это книга а значение это кол-во книг , и
-		 * присваиваем ее в заказ значения мы получаем из выбранный с помощью addtocart
-		 */
 
 		Cart cart = (Cart) session.getAttribute("cart");
 		Map<Book, Integer> items = cart.getItems();
-
-		/*
-		 * итерируем пока эл-ты(книги) будут добавляться , таким образом постоянно
-		 * обновляя ордер дитеилс, при этом для каждого элемента (который хранит инфу о
-		 * книге, кол-ве книг , цене, и полнойстоимости) корзины создавая новый
-		 * ордердитейл
-		 */
 
 		Iterator<Book> iterator = items.keySet().iterator();
 
@@ -164,6 +164,7 @@ public class OrderServices {
 			float subTotal = quantity * book.getPrice();
 
 			OrderDetail orderDetail = new OrderDetail();
+
 			orderDetail.setBook(book);
 			orderDetail.setBookOrder(order);
 			orderDetail.setQuantity(quantity);
@@ -172,52 +173,67 @@ public class OrderServices {
 			orderDetails.add(orderDetail);
 		}
 
-		/*
-		 * и в конце мы отправяем это все в букрОрдер, который явяется общим как для
-		 * инфы о покупателе так для инфы о книге
-		 */
 		order.setOrderDetails(orderDetails);
-		/*
-		 * выводим полную стоимость заказа
-		 */
+
 		order.setOrderTotal(cart.getTotalAmount());
+	
+		
+		if (cart.getTotalAmount() > customer.getCustomerBalance()) {
+			String message = "There is not enough money in your account, Please replenish your balance";
 
-		/*
-		 * После полного добавления, создаем данный заказ, и после сразу же очищаем
-		 * корзину
-		 */
+			request.setAttribute("message", message);
 
-		orderDAOImpl.create(order);
-		cart.clear();
+			String messagePage = "/frontend/message.jsp";
 
-		/*
-		 * передаем сообщение спасибо за заказ
-		 */
-		String message = "Thank you for the order";
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher(messagePage);
 
-		request.setAttribute("message", message);
+			requestDispatcher.forward(request, response);
+			cart.clear();
 
-		String messagePage = "/frontend/message.jsp";
+		} else {
 
-		RequestDispatcher requestDispatcher = request.getRequestDispatcher(messagePage);
+			float newCustomerBalance = customer.getCustomerBalance() - cart.getTotalAmount();
 
-		requestDispatcher.forward(request, response);
+			customer.setCustomerBalance(newCustomerBalance);
+			
+			CustomerDAOImpl customerDAOImpl = new CustomerDAOImpl();
+			
+			customerDAOImpl.update(customer);
+
+			orderDAOImpl.create(order);
+			cart.clear();
+
+			String message = "Thank you for the order";
+
+			request.setAttribute("message", message);
+
+			String messagePage = "/frontend/message.jsp";
+
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher(messagePage);
+
+			requestDispatcher.forward(request, response);
+
+			LOGGER.info("Order is processed ");
+		}
 
 	}
 
+	/**
+	 * Method realized to show the entire history of customer orders, but this
+	 * access if customer logged on his session,at first loading the session of the
+	 * buyer who logged in and working with it
+	 * 
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	public void listOrderByCustomer() throws ServletException, IOException {
-		/*
-		 * с помощью этого метода получаем все историю заказов покупателя, изначально
-		 * загружая сессию покупателя который залогинился и работаем с ней
-		 */
+		LOGGER.info("Get customer order history");
+
 		HttpSession session = request.getSession();
 		Customer customer = (Customer) session.getAttribute("loggedCustomer");
 
 		List<BookOrder> listOrders = orderDAOImpl.listByCustomer(customer.getCustomerId());
 
-		/*
-		 * загружаем полученный список заказов покупателя на страницу истории заказов
-		 */
 		request.setAttribute("listOrders", listOrders);
 
 		String historyPage = "/frontend/order_list.jsp";
@@ -225,24 +241,23 @@ public class OrderServices {
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(historyPage);
 
 		requestDispatcher.forward(request, response);
+		LOGGER.info("Customer order history has been gotten");
 	}
 
+	/**
+	 * Method get order id , and show for the display edit form for the order, which
+	 * id is it, we are working with session for the customer and for order
+	 * 
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	public void showEditOrderForm() throws ServletException, IOException {
 
-		/*
-		 * Метод перенаправляет со страницы со всеми заказами, на страницу конкретного
-		 * заказа, где ее можно будет редактировать
-		 */
-
+		LOGGER.info("Get edit order form ");
 		Integer orderId = Integer.parseInt(request.getParameter("id"));
 
 		BookOrder order = orderDAOImpl.get(orderId);
 
-		/*
-		 * после получения номер заказа открывает и создаем для него сессию и работаем с
-		 * ней
-		 * 
-		 */
 		HttpSession session = request.getSession();
 
 		session.setAttribute("order", order);
@@ -255,28 +270,22 @@ public class OrderServices {
 
 	}
 
+	/**
+	 * Method remove books from order, by books id , only for admin users
+	 * 
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	public void removeBookFromOrder() throws ServletException, IOException {
-		/*
-		 * мы запрашиваем ИД номера книги
-		 */
+		LOGGER.info("Remove book ,by book id ");
 
 		int bookId = Integer.parseInt(request.getParameter("id"));
-		/*
-		 * далее получаем сессию заказа, и получаем сам заказ
-		 */
 
 		HttpSession session = request.getSession();
 
 		BookOrder order = (BookOrder) session.getAttribute("order");
 
-		/*
-		 * далее с помощью сет Ордер дитеилс мы перебираем полученный заказ, присваиваем
-		 * его ордер дитейл и сравниваем его с запрошенным ИД через итератор, если
-		 * совпал то удаляем и идем дальше , формально мы просто перебираем циклом наш
-		 * Ид находим его и удаляем
-		 */
-
-		Set<OrderDetail> orderDetails = order.getOrderDetails(); // ошибка тут !
+		Set<OrderDetail> orderDetails = order.getOrderDetails();
 
 		Iterator<OrderDetail> iterator = orderDetails.iterator();
 
@@ -284,60 +293,54 @@ public class OrderServices {
 			OrderDetail orderDetail = iterator.next();
 
 			if (orderDetail.getBook().getBookId() == bookId) {
-				/*
-				 * так же выполняем ф-циб пересчета полной стоимости
-				 */
+			
 				float newTotal = order.getOrderTotal() - orderDetail.getSubTotal();
+
 				order.setOrderTotal(newTotal);
+
 				iterator.remove();
+
+				LOGGER.info("Re-calculate order total amount, and after  remove book with ID: {}", bookId);
 			}
 		}
-		/*
-		 * далее обновляем страницу ордерформ
-		 */
+	
 
 		String editOrderFormPage = "order_form.jsp";
+
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(editOrderFormPage);
 		requestDispatcher.forward(request, response);
 
 	}
 
-	public void updateOrder() throws ServletException, IOException {  //РАЗОБРАТЬСЯ С ЭТИМ МЕТОДОМ КАК ОН РАБОТАЕТ 
-
-		/*
-		 * далее получаем сессию заказа, и получаем сам заказ из сессию 
-		 */
+	/**
+	 * Method update information in order, by order id
+	 * 
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	public void updateOrder() throws ServletException, IOException {
+		LOGGER.info("Try to update information in some order");
+	
 		HttpSession session = request.getSession();
 
 		BookOrder order = (BookOrder) session.getAttribute("order");
 
-		
 		String recipientName = request.getParameter("recipientName");
 		String recipientPhone = request.getParameter("recipientPhone");
 		String shippingAddress = request.getParameter("shippingAddress");
 		String paymentMethod = request.getParameter("paymentMethod");
 		String orderStatus = request.getParameter("orderStatus");
 
-		/*
-		 * выше указаны все данные покупателя которые в последующем будут изменены ниже
-		 * массивы книг ИД которые указаны в заказе и массивы цен на эти книги а так же
-		 * массив их кол-ва Длина arrayQuantity такая же как и у массива книг ,а вот
-		 * элементы являются кол-вом этих самых книг
-		 */
-
 		String[] arrayBookId = request.getParameterValues("bookId");
 		String[] arrayPrice = request.getParameterValues("price");
 		String[] arrayQuantity = new String[arrayBookId.length];
 
 		for (int i = 1; i <= arrayQuantity.length; i++) {
-			/*
-			 * цикл вызывает каждый элемент (кол-во книг) по отдельности
-			 */
 			arrayQuantity[i - 1] = request.getParameter("quantity" + i);
 		}
 
 		Set<OrderDetail> orderDetails = order.getOrderDetails();
-		orderDetails.clear();
+		orderDetails.clear(); 
 
 		float totalAmount = 0.0f;
 
@@ -365,7 +368,6 @@ public class OrderServices {
 		order.setShippingAddress(shippingAddress);
 		order.setPaymentMethod(paymentMethod);
 		order.setOrderStatus(orderStatus);
-
 		order.setOrderTotal(totalAmount);
 
 		orderDAOImpl.update(order);
@@ -374,21 +376,23 @@ public class OrderServices {
 
 		listAllOrder(message);
 
+		LOGGER.info("The order {} has been updated", order.getOrderId());
+
 	}
 
+	/**
+	 * Method shows order details for purchase
+	 * 
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	public void showOrderDetailForCustomer() throws ServletException, IOException {
-		/*
-		 * этот метод показывает детали о заказе для покупалея
-		 */
+		LOGGER.info("Show detail about  order by order id, only for the customer");
 
 		Integer orderId = Integer.parseInt(request.getParameter("id"));
 
-		/*
-		 * сессию мы вызываем для доп проверки что бы можно было смотреть историю
-		 * заказов только залогиневшегося покупателя
-		 */
-
 		HttpSession session = request.getSession();
+		
 		Customer customer = (Customer) session.getAttribute("loggedCustomer");
 
 		BookOrder order = orderDAOImpl.get(orderId, customer.getCustomerId());
@@ -403,17 +407,23 @@ public class OrderServices {
 
 	}
 
+	/**
+	 * Method deleted the order from order list(for admin user)
+	 * 
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	public void deleteOrder() throws ServletException, IOException {
-		
+
 		Integer orderId = Integer.parseInt(request.getParameter("id"));
-		
+
 		orderDAOImpl.delete(orderId);
-				
+
 		String message = "Order with ID: " + orderId + " has been deleted!";
-		
+
 		listAllOrder(message);
 
-		
+		LOGGER.info("Order with ID: {} has been deleted!", orderId);
 	}
 
 }

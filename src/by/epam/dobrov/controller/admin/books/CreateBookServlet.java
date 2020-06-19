@@ -1,7 +1,5 @@
 package by.epam.dobrov.controller.admin.books;
 
-
-import by.epam.dobrov.dao.impl.BookDAOImpl;
 import by.epam.dobrov.service.BookServices;
 
 import java.io.IOException;
@@ -13,23 +11,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/admin/create_book")
-/*
- * Эта аннотация используется, когда нам нужно аннотировать сервлет для
- * обработки запросов multipart/form-data (обычно используется для сервлета
- * выгрузки файлов).
- * Это откроет методы getParts () и getPart (name) для HttpServletRequest ,
- * которые можно использовать для доступа ко всем частям, а также к отдельным
- * частям.
- * Загруженный файл можно записать на диск, вызвав write (fileName) объекта
- * Part. 
- * Теперь мы рассмотрим пример сервлета UploadCustomerDocumentsServlet , который
- * демонстрирует его использование:
+/**
+ * 9. Система Интернет-магазин. Администратор осуществляет ведение каталога
+ * Товаров. Клиент делает и оплачивает Заказ на Товары. Администратор может
+ * занести неплательщиков в “черный список”.
+ * 
+ * @author Viktor
+ *
  */
-@MultipartConfig(fileSizeThreshold = 1024 * 10, // загруженный файл временно. Если размер загруженного файла больше этот порог, он будет храниться на диске. В противном случае файл хранится в памяти (размер в байтах)  в байтах 10КБ
-		maxFileSize = 1024 * 300, // это максимальный размер загружаемого файла (размер в байт)  300КБ
-		maxRequestSize = 1024 * 1024 //это максимальный размер запроса, включая как загруженные файлы, так и другие данные формы (размер в байтах) 1МБ
-)
+@WebServlet("/admin/create_book")
+@MultipartConfig(fileSizeThreshold = 1024 * 10, maxFileSize = 1024 * 300, maxRequestSize = 1024 * 1024)
 
 public class CreateBookServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -41,7 +32,7 @@ public class CreateBookServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		BookServices bookServices = new BookServices( request, response);
+		BookServices bookServices = new BookServices(request, response);
 		bookServices.createNewBook();
 	}
 

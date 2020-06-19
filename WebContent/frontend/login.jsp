@@ -19,7 +19,6 @@
 		<h2>Customer Login</h2>
 
 		<c:if test="${message != null }">
-			<!--   проверяет если мессаге пуст то ничего не выводится а если мессаге  заполнен  то выводим сообщение об ошибке -->
 			<div align="center">
 				<h4 class="message">${message}</h4>
 			</div>
@@ -53,13 +52,12 @@
 	<jsp:directive.include file="footer.jsp" />
 
 	<script type="text/javascript">
-		// скрипт для проверки заполнения полей , если поле не заполнено то скрипт работает
 
 		$(document).ready(function() {
 			$("#loginForm").validate({
 				rules : {
 					email : {
-						required : true, //если идет запрос, что нужно заполнить поле, то будет выводится сообщение которое внизу в мессагес
+						required : true, 
 						email : true
 					},
 
@@ -68,7 +66,7 @@
 
 				messages : {
 					email : {
-						required : "Please enter email", // если поле пусто то будет эта надпись а если заполнено, но не имейл а мусор , то надпись ниже
+						required : "Please enter email",
 						email : "Please enter an valid email address"
 					},
 

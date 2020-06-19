@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
@@ -40,48 +41,55 @@
 							<th>No</th>
 							<th colspan="2">Book</th>
 							<th>Quantity</th>
-							<th>Price</th>
-							<th>Subtotal</th>
+							<th>Price,$</th>
+							<th>Subtotal,$</th>
+							<th>Action</th>
 						</tr>
 
 						<c:forEach items="${cart.items}" var="item" varStatus="status">
 							<tr align="center">
 								<td>${status.index + 1 }</td>
+								
 								<td valign="middle"><img
 									src="data:image/jpg;base64,${item.key.base64Image }" width="84"
 									height="110" /></td>
+									
 								<td>${item.key.title }</td>
-								<td>
-								<input type ="hidden" name="bookId" value="${item.key.bookId}"/> <!-- для каждой книги чтоб увеличить ее кол-во мы имеем ИД и кол-во, в данном случае ключ:значение -->
-								<input type="text" name="quantity${status.index + 1}"
+								
+								<td><input type="hidden" name="bookId"
+									value="${item.key.bookId}" /> 
+									<input type="text" name="quantity${status.index + 1}"
 									value="${item.value }" size="5" /></td>
-								<!-- для редактирования кол-ва книг -->
+									
+						
 								<td><fmt:formatNumber value="${item.key.price }"
 										type="currency" /></td>
+										
 								<td><fmt:formatNumber
 										value="${item.value * item.key.price}" type="currency" /></td>
 								<td><a href="delete_from_cart?book_id=${item.key.bookId}">Delete</a></td>
 							</tr>
 						</c:forEach>
-							<tr>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td>Total:</td>
-								<td colspan="2"><fmt:formatNumber
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td>Total:</td>
+							<td colspan="2"><fmt:formatNumber
 									value="${cart.totalAmount }" type="currency" /></td>
-							</tr>
+							<td></td>
+						</tr>
 					</table>
 				</div>
 				<div>
 					<table>
 						<tr>
-						&nbsp;&nbsp;&nbsp;
+							&nbsp;&nbsp;&nbsp;&nbsp;
 							<td></td>
 							<td><button type="submit">Update</button></td>
 							<td><a href="${pageContext.request.contextPath}/">Continue
 									shopping</a></td>
-							<!--  идет перенаправление на главную страницу -->
+	
 							<td><a href="checkout">Checkout</a></td>
 						</tr>
 					</table>
@@ -89,7 +97,7 @@
 			</form>
 		</c:if>
 	</div>
-&nbsp;&nbsp;&nbsp;
+	&nbsp;&nbsp;&nbsp;&nbsp;
 	<jsp:directive.include file="footer.jsp" />
 
 	<script type="text/javascript">

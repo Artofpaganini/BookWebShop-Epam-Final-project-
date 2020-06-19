@@ -9,6 +9,15 @@ import javax.servlet.http.HttpServletResponse;
 
 import by.epam.dobrov.service.CategoryServices;
 
+
+/**
+ * 9. Система Интернет-магазин. Администратор осуществляет ведение каталога
+ * Товаров. Клиент делает и оплачивает Заказ на Товары. Администратор может
+ * занести неплательщиков в “черный список”.
+ * 
+ * @author Viktor
+ *
+ */
 @WebServlet("/admin/list_category")
 public class ListCategoryServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

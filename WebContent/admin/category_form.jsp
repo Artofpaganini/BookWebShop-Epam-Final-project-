@@ -46,7 +46,7 @@
 			<tr>
 				<td colspan="2" align="center"><input type="submit"
 					value="Save"> <input type="button" value="Cancel"
-					onclick="javascript:history.go(-1);"> <!--  onclick  вернет на предыдущую страницу -->
+					onclick="javascript:history.go(-1);"> 
 				</td>
 			</tr>
 
@@ -54,10 +54,7 @@
 		</form>
 	</div>
 </body>
-<!--  этот скрипт создает  булеан метод который если вернет тру = то сабмит возможен или если фолсс то заставит ввести  поля заново , он расположен  onsubmit -->
 <script type="text/javascript">
-
-
 	$(document).ready(function() {
 		$("#categoryForm").validate({
 			rules : {
@@ -70,7 +67,5 @@
 		});
 
 	});
-
-
 </script>
 </html>

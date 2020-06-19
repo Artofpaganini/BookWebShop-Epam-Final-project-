@@ -12,53 +12,47 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-@WebFilter("/admin/*") // * говорит что все запросы которые имеют в себе admin будут проходить через
-						// этот фильтр
-/*
- * РЕАЛИЗАЦИЯ  фильтоа для перехватывания всех запросов приходящих в секцию админа 
- * Фильтры могут быть использованы для следующих задач: Работа с ответами
- * сервера перед тем, как они будут переданы клиенту Перехватывание запросов от
- * клиента перед тем, как они будут отправлены на сервер мы можем иметь цепочки
- * фильтроав работает как барьер проверки , выполнено ли условие или нет
+@WebFilter("/admin/*") 
+
+/**
+ * 9. Система Интернет-магазин. Администратор осуществляет ведение каталога
+ * Товаров. Клиент делает и оплачивает Заказ на Товары. Администратор может
+ * занести неплательщиков в “черный список”.
+ * 
+ * @author Viktor
+ *
  */
 public class AdminLoginFilter implements Filter {
 
 	public AdminLoginFilter() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public void destroy() {
-		// TODO Auto-generated method stub
 	}
 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
+		
 		HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-		HttpSession session = httpServletRequest.getSession(false); // фолс имеется ввиде что мы получили сессию и не
-																	// создаем новую, если она не ожидается
-		/**
-		 * 'это утверждение и определяет юзер залогинился или нет
-		 */
-		boolean logIn = session != null && session.getAttribute("useremail") != null;// т.е. проверяем сессия не нул
-																						// после доступа к сессии
-																						// атрибут не нулл то все норм
+		HttpSession session = httpServletRequest.getSession(false); 
+		
+		boolean logIn = session != null && session.getAttribute("useremail") != null;
 
 		String loginURI = httpServletRequest.getContextPath() + "/admin/login";
 		boolean loginRequest = httpServletRequest.getRequestURI().equals(loginURI);
 		boolean loginPage = httpServletRequest.getRequestURI().endsWith("login.jsp");
 
-		if (logIn && (loginRequest || loginPage)) { // переводит на страницу админа . если ты не сделал логаут но вписал в урл адресе login.jsp
+		if (logIn && (loginRequest || loginPage)) { 
 
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/");
 			dispatcher.forward(request, response);
 
 		} else if (logIn || loginRequest) {
-			chain.doFilter(request, response); // если юзер залогинился то продолжаем нормальный поток запросов, т.е
-												// переходы на соотв стр и тп
+			chain.doFilter(request, response);
+			
 		} else {
-
-			RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp"); // иначе возвращаем на страницу
-																						// ввода логина и пасса
+			RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp"); 
+			
 			dispatcher.forward(request, response);
 		}
 

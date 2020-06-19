@@ -2,13 +2,13 @@ package by.epam.dobrov.dao.impl;
 
 import static org.junit.Assert.*;
 
-import java.util.Date;
+
 import java.util.HashSet;
-import java.util.Iterator;
+
 import java.util.List;
 import java.util.Set;
 
-import javax.sound.midi.Soundbank;
+
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -18,7 +18,7 @@ import by.epam.dobrov.entity.Book;
 import by.epam.dobrov.entity.BookOrder;
 import by.epam.dobrov.entity.Customer;
 import by.epam.dobrov.entity.OrderDetail;
-import by.epam.dobrov.entity.OrderDetailId;
+
 
 public class OrderDAOImplTest {
 

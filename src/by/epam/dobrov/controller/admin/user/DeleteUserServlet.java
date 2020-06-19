@@ -10,13 +10,21 @@ import javax.servlet.http.HttpServletResponse;
 
 import by.epam.dobrov.service.UsersServices;
 
+/**
+ * 9. Система Интернет-магазин. Администратор осуществляет ведение каталога
+ * Товаров. Клиент делает и оплачивает Заказ на Товары. Администратор может
+ * занести неплательщиков в “черный список”.
+ * 
+ * @author Viktor
+ *
+ */
 @WebServlet("/admin/delete_user")
 public class DeleteUserServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	public DeleteUserServlet() {
 		super();
-		// TODO Auto-generated constructor stub
+	
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)

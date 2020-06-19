@@ -14,8 +14,8 @@
 				value="Grozbeckert2015" />
 			<property name="javax.persistence.jdbc.driver"
 				value="com.mysql.cj.jdbc.Driver" />
-			<property name="hibernate.show_sql" value="true" />   <!--выводит на экран команду mysql -->
-			<property name="hibernate.format_sql" value="true" /> <!--выводит на экран команду mysql в стиле java-code -->
+			<property name="hibernate.show_sql" value="true" />  
+			<property name="hibernate.format_sql" value="true" />
 		</properties>
 	</persistence-unit>
 </persistence>

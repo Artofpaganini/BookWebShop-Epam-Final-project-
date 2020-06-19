@@ -9,9 +9,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import by.epam.dobrov.dao.impl.BookDAOImpl;
-import by.epam.dobrov.entity.Book;
-
+/**
+ * 9. Система Интернет-магазин. Администратор осуществляет ведение каталога
+ * Товаров. Клиент делает и оплачивает Заказ на Товары. Администратор может
+ * занести неплательщиков в “черный список”.
+ * 
+ * @author Viktor
+ *
+ */
 @WebServlet("/view_cart")
 public class ViewCartServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -21,28 +26,21 @@ public class ViewCartServlet extends HttpServlet {
 
 	}
 
-	/*
-	 * с помощью этого сервлета, мы будем переходит на страницу с корзиной когда мы
-	 * вызываем этот сервлет мы так же добавляем объект карт в сессию, если карт
-	 * =null мы создаем новую сущность карт и кладем ее в сессию
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		/*
-		 * Когда покупатель добавляет книги в корзину, объект карт добавляется в сессию
-		 */
 		Object cartObject = request.getSession().getAttribute("cart");
-		
+
 		if (cartObject == null) {
 
 			Cart cart = new Cart();
 
 			request.getSession().setAttribute("cart", cart);
-		
+
 		}
-		
+
 		String cartPage = "frontend/cart.jsp";
+		
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(cartPage);
 		requestDispatcher.forward(request, response);
 	}

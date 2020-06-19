@@ -4,10 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityNotFoundException;
-import javax.persistence.Persistence;
 import javax.persistence.PersistenceException;
 
 import org.junit.AfterClass;
@@ -34,7 +31,7 @@ public class UserDAOImplTest extends BaseDAOTest {
 	}
 
 	@Test
-	public void test_ShouldCreateNewUsers() { // проверка добавления пользователя
+	public void test_ShouldCreateNewUsers() { 
 
 		Users user = new Users();
 		user.setEmail("AidaShelby@gmail.com");
@@ -47,17 +44,8 @@ public class UserDAOImplTest extends BaseDAOTest {
 		assertTrue(user.getUsersId() > 0);
 	}
 
-	@Test(expected = PersistenceException.class)
-	public void test_ShouldCreateUsersWithoutFieldsExpectedException() { // проверка добавлен ли пользователь без полей
-		Users user = new Users();
-
-		user = userDAOImpl.create(user);
-		assertTrue(user.getUsersId() > 0);
-
-	}
-
 	@Test
-	public void test_ShouldUpdatePasswordExistingUser() { // check the password changed or not
+	public void test_ShouldUpdatePasswordExistingUser() { 
 
 		Users user = new Users();
 
@@ -110,7 +98,7 @@ public class UserDAOImplTest extends BaseDAOTest {
 
 	}
 
-	@Test(expected = EntityNotFoundException.class) // проверка на удаление не существующего юзера
+	@Test(expected = EntityNotFoundException.class) 
 	public void test_ShouldDeleteNotExistUserExpectException() {
 		Integer userId = 100;
 

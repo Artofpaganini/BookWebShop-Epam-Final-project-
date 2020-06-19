@@ -2,7 +2,7 @@ package by.epam.dobrov.entity;
 // Generated 06.05.2020 11:19:20 by Hibernate Tools 5.2.12.Final
 
 import java.util.Base64;
-import java.util.Date;
+
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Column;
@@ -17,36 +17,27 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
+/**
+ * 9. Система Интернет-магазин. Администратор осуществляет ведение каталога
+ * Товаров. Клиент делает и оплачивает Заказ на Товары. Администратор может
+ * занести неплательщиков в “черный список”.
+ * 
+ * @author Viktor
+ *
+ */
 @Entity
 @Table(name = "book", catalog = "book_shop", uniqueConstraints = @UniqueConstraint(columnNames = "title"))
-@NamedQueries({ @NamedQuery(name = "Book.findAll", query = "Select b from Book b order by b.title"), // order by -
-																										// сортировать
-																										// по
+@NamedQueries({ @NamedQuery(name = "Book.findAll", query = "Select b from Book b order by b.title"),
 		@NamedQuery(name = "Book.findByTitle", query = "Select b from Book b where b.title= :title"),
 		@NamedQuery(name = "Book.findByIsbn", query = "Select b from Book b where b.isbn= :isbn"),
 		@NamedQuery(name = "Book.countAll", query = "Select COUNT(*) from Book b "),
 		@NamedQuery(name = "Book.findByCategory", query = "Select b from Book b join fetch "
 				+ "Category c ON b.category.categoryId = c.categoryId AND c.categoryId = :сatId"),
-
-		/*
-		 * //% - для соответствия нулю или более символов. || - конкатенация с кейвордом
-		 * в jpql
-		 */
 		@NamedQuery(name = "Book.searchBook", query = "Select b from Book b where b.title like '%' || :keyword || '%' "
-				+ "or b.author like '%' || :keyword || '%' or b.description like '%' || :keyword || '%' "),
-		/*
-		 * or b.author like :keyword or b.description like :keyword // используем join
-		 * on(Выбираются только те записи, которые совпадают в обоих таблицах.) чтобы
-		 * соединить 2 таблицы, бук и категори выбрать книги из табл книги и категории ,
-		 * где категорииИД книг = категориямИд и категорииИД = вызванному № категорииИД
-		 */
-
-})
+				+ "or b.author like '%' || :keyword || '%' or b.description like '%' || :keyword || '%' ") })
 public class Book implements java.io.Serializable {
 
 	private Integer bookId;
@@ -74,11 +65,6 @@ public class Book implements java.io.Serializable {
 		this.price = price;
 
 	}
-
-	/*
-	 * для корзины и добавления книг мы создаем отдельный конструктор чтобы
-	 * инициализировать тест прямо при добавлении в корзину, т.е сразу в addItem
-	 */
 
 	public Book(Integer bookId) {
 		super();
@@ -123,12 +109,6 @@ public class Book implements java.io.Serializable {
 		this.bookId = bookId;
 	}
 
-	/*
-	 * EAGER загрузка коллекций означает, что они извлекаются полностью в момент
-	 * извлечения их родителя. Таким образом , если у вас есть Course и у него есть
-	 * List<Student>, все студенты извлекаются из базы данных в то время, когда
-	 * извлекается Course .
-	 */
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "categoryId", nullable = false)
 	public Category getCategory() {
@@ -202,14 +182,11 @@ public class Book implements java.io.Serializable {
 		this.orderDetails = orderDetailses;
 	}
 
-	@Transient // имеется ввиду что геттер и сеттер не связаны ни с одним полем из БД
+	@Transient
 	public String getBase64Image() {
 		this.base64Image = Base64.getEncoder().encodeToString(this.image);
 		return this.base64Image;
-		/*
-		 * Если хотим напрямую закодировать строку и получить результат в виде
-		 * закодированной строки, можем использовать это.
-		 */
+
 	}
 
 	@Transient

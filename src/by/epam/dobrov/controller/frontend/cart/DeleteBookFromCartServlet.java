@@ -7,9 +7,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import by.epam.dobrov.dao.impl.BookDAOImpl;
+
 import by.epam.dobrov.entity.Book;
 
+/**
+ * 9. Система Интернет-магазин. Администратор осуществляет ведение каталога
+ * Товаров. Клиент делает и оплачивает Заказ на Товары. Администратор может
+ * занести неплательщиков в “черный список”.
+ * 
+ * @author Viktor
+ *
+ */
 @WebServlet("/delete_from_cart")
 public class DeleteBookFromCartServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -18,9 +26,6 @@ public class DeleteBookFromCartServlet extends HttpServlet {
 		super();
 	}
 
-	/*
-	 * сервлет активирует кнопку  удалить  книгу из корзины
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -29,8 +34,6 @@ public class DeleteBookFromCartServlet extends HttpServlet {
 		Object cartObject = request.getSession().getAttribute("cart");
 
 		Cart cart = (Cart) cartObject;
-
-		BookDAOImpl bookDAOImpl = new BookDAOImpl();
 
 		cart.removeItem(new Book(bookId));
 

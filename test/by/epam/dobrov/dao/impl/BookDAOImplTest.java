@@ -7,7 +7,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
-import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 
 import org.junit.AfterClass;
@@ -16,7 +15,6 @@ import org.junit.Test;
 
 import by.epam.dobrov.entity.Book;
 import by.epam.dobrov.entity.Category;
-import by.epam.dobrov.entity.Users;
 
 public class BookDAOImplTest extends BaseDAOTest {
 
@@ -51,8 +49,7 @@ public class BookDAOImplTest extends BaseDAOTest {
 
 		String imagePath = "D:\\eclipseWeb\\books images\\firstHeadJava.JPG";
 
-		byte[] imageBytes = Files.readAllBytes(Paths.get(imagePath)); // этот метод читает все байты и возвращает массив
-																		// байтов
+		byte[] imageBytes = Files.readAllBytes(Paths.get(imagePath));
 		book.setImage(imageBytes);
 
 		Book createdBook = bookDAOImpl.create(book);
@@ -182,13 +179,11 @@ public class BookDAOImplTest extends BaseDAOTest {
 		for (Book book : listBooks) {
 			System.out.println(book.getTitle());
 		}
-		
-		assertEquals(2, listBooks.size());
-		
 
-		
+		assertEquals(2, listBooks.size());
+
 	}
-	
+
 	@Test
 	public void test_ShouldSearchBookByAuthor() {
 
@@ -199,11 +194,11 @@ public class BookDAOImplTest extends BaseDAOTest {
 		for (Book book : listBooks) {
 			System.out.println(book.getTitle());
 		}
-		
+
 		assertEquals(2, listBooks.size());
-		
+
 	}
-	
+
 	@Test
 	public void test_ShouldSearchBookByDescription() {
 
@@ -214,19 +209,19 @@ public class BookDAOImplTest extends BaseDAOTest {
 		for (Book book : listBooks) {
 			System.out.println(book.getTitle());
 		}
-		
+
 		assertEquals(1, listBooks.size());
-		
+
 	}
-	
+
 	@Test
 	public void test_ShouldShowListBestSellingBooks() {
 		List<Book> topBestSellingBooks = bookDAOImpl.listBestSellingBooks();
-		
+
 		for (Book book : topBestSellingBooks) {
 			System.out.println(book.getTitle());
 		}
-		
+
 		assertEquals(4, topBestSellingBooks.size());
 	}
 

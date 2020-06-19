@@ -39,7 +39,6 @@
 				<td>Email:</td>
 				<td><input type="text" id="email" name="email" size="45"
 					value="${customer.email}" /></td>
-
 			</tr>
 			<tr>
 				<td>Full Name:</td>
@@ -92,14 +91,18 @@
 			<tr>
 				<td>Block Status:</td>
 				<c:if test="${customer != null}">
-					<td><input type="сheckbox" id="block" name="block" size="45"
-						value="${customer.block}" /></td>
+					<td><select name="block">
+							<option value="true">Block</option>
+							<option value="false">Unlock</option>
+
+
+					</select></td>
 				</c:if>
 				<c:if test="${customer == null}">
-					<td><input type="сheckbox" id="block" name="block" size="45"
-						value="false" /></td>
+					<td><select name="block">
+							<option value="false">Unlock</option>
+					</select></td>
 				</c:if>
-
 			</tr>
 
 			<tr>

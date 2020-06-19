@@ -9,12 +9,11 @@
 	<div>
 		Welcome,
 		<c:out value="${sessionScope.useremail }"></c:out>
-		<!--sessionScope -	Контекст сессии. Переменные доступны в течение всей сессии пользователя, т.е. пока не будет закрыт браузер или не закончится предельное время бездействия.  -->
 		| <a href="logout">Logout</a> <br /> <br />
 	</div>
 
 	<div id="headermenu">
-		<!-- <b></b> делает шрифт жирным -->
+
 
 		<div>
 			<a href="list_users"> <img src="../images/users.png" /><br />Users

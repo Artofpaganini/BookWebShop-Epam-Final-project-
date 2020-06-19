@@ -11,7 +11,6 @@
 <body>
 	<jsp:directive.include file="header.jsp" />
 
-	<!--  cоздание таблицы  для бук дитейл, тут  юзер сможет увидеть инфу о товаре  и добавить его в корзину -->
 	<div align="center">
 
 		<table width="80%" border="0">
@@ -28,7 +27,7 @@
 					height="300" /></td>
 
 				<td valign="top" style="text-align: justify;">
-					${book.description}</td>
+					${book.description}333</td>
 
 				<td valign="top" rowspan="2" width="20%">
 					<h2>$${book.price}</h2> 

@@ -21,7 +21,6 @@
 
 	<div align="center">
 		<table border="1" cellpadding="7">
-			<!-- cellpadding  увеличение размера таблицы -->
 			<tr>
 				<th>Index</th>
 				<th>ID</th>
@@ -32,15 +31,13 @@
 			<c:forEach var="user" items="${listUsers}" varStatus="status">
 				<tr>
 					<td>${status.index+1}</td>
-					<!-- индекс это номер на сайте а ИД  это номер по БД -->
 					<td>${user.usersId}</td>
 					<td>${user.email}</td>
 					<td>${user.fullName}</td>
 
 
-					<td><a href="edit_user?id=${user.usersId }">Edit</a> &nbsp <!-- &nbsp  неразрывный пробел -->
-						<a href="javascript:confirmDelete(${user.usersId})">Delete</a>
-						&nbsp</td>
+					<td><a href="edit_user?id=${user.usersId }">Edit</a> &nbsp <a
+						href="javascript:confirmDelete(${user.usersId})">Delete</a> &nbsp</td>
 				</tr>
 			</c:forEach>
 		</table>
@@ -48,8 +45,8 @@
 	<script>
 		function confirmDelete(userId) {
 			if (confirm('Are you sure? You want to delete the user with ID '
-					+ userId + '?')) { // функция вернет тру если нажать окей в вопросе
-				window.location = 'delete_user?id=' + userId; // отметка урл адреса как  http://localhost:8080/BookWebShop/admin/delete_user
+					+ userId + '?')) {
+				window.location = 'delete_user?id=' + userId;
 			}
 		}
 	</script>
